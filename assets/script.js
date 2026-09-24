@@ -9,6 +9,7 @@ function closeMobileNav(){
 }
 function toggleNavDropdown(e){
   if(window.innerWidth<=768){
+    e.preventDefault();
     e.stopPropagation();
     document.getElementById('navDropdown').classList.toggle('open');
   }
