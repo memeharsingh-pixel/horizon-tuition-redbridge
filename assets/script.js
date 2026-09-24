@@ -86,7 +86,7 @@ function initPromoPopup(){
   ];
   var now=new Date();
   var upcoming=mocks.filter(function(m){return m.date>now;});
-  if(upcoming.length===0)return; // promo retired — last mock has passed
+  if(upcoming.length===0)return; // promo retired, last mock has passed
   if(location.pathname.indexOf('/contact')===0)return; // don't pop up on the booking page itself
   var dismissed=localStorage.getItem('htr_promo_dismissed');
   if(dismissed && new Date(dismissed).toDateString()===now.toDateString())return;
