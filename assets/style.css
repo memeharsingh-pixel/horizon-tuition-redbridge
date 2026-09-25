@@ -451,3 +451,13 @@ nav.menu-open{z-index:200}
 .tc-actions button[disabled]{opacity:0.45;cursor:not-allowed;transform:none!important}
 .tc-draft{background:var(--amber-light);border:1.5px solid var(--amber);border-radius:var(--radius);
   padding:1rem 1.25rem;margin-bottom:1.5rem;color:var(--navy);font-size:0.9rem;line-height:1.6}
+
+/* ---- resources: curated link lists ---- */
+.res-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0.85rem}
+.res-link{display:block;background:#fff;border:1.5px solid var(--grey-200);
+  border-radius:var(--radius-sm);padding:0.95rem 1.1rem;text-decoration:none}
+.res-link:hover{border-color:var(--teal);transform:translateY(-2px)}
+.res-link-t{display:block;font-weight:600;color:var(--navy);font-size:0.94rem;margin-bottom:0.25rem}
+.res-link-t::after{content:" \2197";color:var(--teal);font-weight:400}
+.res-link[href^="/"] .res-link-t::after{content:" \2192"}
+.res-link-d{display:block;color:var(--grey-600);font-size:0.85rem;line-height:1.55}
