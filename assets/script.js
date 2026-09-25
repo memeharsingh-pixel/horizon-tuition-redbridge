@@ -148,12 +148,14 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     function sweep(){
       pending = false;
       var h = window.innerHeight || document.documentElement.clientHeight;
-      for(var i = els.length - 1; i >= 0; i--){
+      var cut = 0;
+      for(var i = 0; i < els.length; i++){
         if(els[i].getBoundingClientRect().top < h * 0.92){
           els[i].classList.add('is-in');
-          els.splice(i, 1);                     // reveal once, then stop watching
-        }
+          cut = i + 1;                          // reveal once, then stop watching
+        } else break;                           // document order: the rest are lower
       }
+      if(cut) els.splice(0, cut);
       if(!els.length){
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onScroll);
@@ -188,6 +190,7 @@ function toggleMenu(e){
   btn.setAttribute('aria-expanded','true');
   menu.hidden = false;
   menu.classList.add('animating');
+  var nv = document.querySelector('nav'); if(nv) nv.classList.add('menu-open');
   var bd = document.createElement('div');
   bd.className = 'mega-backdrop';
   bd.id = 'megaBackdrop';
@@ -201,6 +204,7 @@ function closeMenu(){
   btn.setAttribute('aria-expanded','false');
   menu.hidden = true;
   menu.classList.remove('animating');
+  var nv = document.querySelector('nav'); if(nv) nv.classList.remove('menu-open');
   var bd = document.getElementById('megaBackdrop');
   if(bd) bd.remove();
 }

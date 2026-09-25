@@ -322,11 +322,11 @@ footer{background:var(--grey-800);color:rgba(255,255,255,0.7);padding:3rem 2rem 
 
 /* ---- motion ---- */
 html{scroll-behavior:smooth}
-.reveal{opacity:0;transform:translateY(20px);
-  transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+.reveal{opacity:0;transform:translateY(14px);
+  transition:opacity .45s cubic-bezier(.22,.61,.36,1),transform .45s cubic-bezier(.22,.61,.36,1)}
 .reveal.is-in{opacity:1;transform:none}
 .card,.pricing-card,.testimonial,.blog-card,.qual-badge,.step{
-  transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s cubic-bezier(.22,.61,.36,1)}
+  transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s cubic-bezier(.22,.61,.36,1)}
 .card:hover,.pricing-card:hover,.blog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .btn-primary,.btn-outline,.btn-secondary,.float-contact,.nav-cta{
   transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
@@ -360,7 +360,7 @@ a,button{transition:color .2s ease,background-color .2s ease,border-color .2s ea
 .mega{position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid var(--grey-200);
   box-shadow:var(--shadow-lg);z-index:120;overflow:hidden}
 .mega[hidden]{display:none}
-.mega.animating{animation:mega-open .3s cubic-bezier(.22,.61,.36,1) both}
+.mega.animating{animation:mega-open .22s cubic-bezier(.22,.61,.36,1) both}
 @keyframes mega-open{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .mega-inner{max-width:1200px;margin:0 auto;padding:2rem 2rem 2.25rem;display:grid;
   grid-template-columns:repeat(4,1fr);gap:2rem}
@@ -418,3 +418,9 @@ a,button{transition:color .2s ease,background-color .2s ease,border-color .2s ea
   .nav-cta{white-space:nowrap;padding:0.5rem 0.85rem;font-size:0.85rem}
   .menu-btn{padding:0.5rem 0.7rem}
 }
+
+/* nav is position:sticky with z-index:100, which creates a stacking context.
+   The menu therefore cannot out-rank a fixed backdrop from outside that
+   context, so raise the whole nav above the backdrop while the menu is open. */
+nav.menu-open{z-index:200}
+.mega-backdrop{background:rgba(15,45,90,0.18)}
