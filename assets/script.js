@@ -110,7 +110,7 @@ function initPromoPopup(){
       '</div>'+
       '<div class="promo-card-body">'+
         '<div class="promo-dates">'+rows+'</div>'+
-        '<div class="promo-price"><span class="num">£28</span><span class="note">per exam · 12:00–2:00pm</span></div>'+
+        '<div class="promo-price"><span class="num">£28</span><span class="note">per exam · 12:00-2:00pm</span></div>'+
         '<div class="promo-btns">'+
           '<a class="btn-primary" href="/contact/?promo=11plus-mock">Book a Place →</a>'+
           '<a class="promo-btn-outline" href="tel:02080586815">Call to Book</a>'+
