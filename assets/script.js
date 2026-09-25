@@ -145,3 +145,53 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     if(msg && !msg.value)msg.value='Enquiring about the 11+ Mock Exam sessions.';
   });
 }
+
+
+/* --- reveal on scroll ---------------------------------------------------
+   A rAF-throttled sweep rather than IntersectionObserver: an observer never
+   fires for elements you jump straight past (anchor links, end-key, restored
+   scroll position), which leaves that content permanently invisible. This
+   cannot get stuck - anything at or above the fold is always revealed. */
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SEL = '.section-head,.card,.pricing-card,.testimonial,.blog-card,.qual-badge,'
+          + '.step,.policy-section,.hiw-step,.trust-item';
+  document.addEventListener('DOMContentLoaded', function(){
+    var els = [].slice.call(document.querySelectorAll(SEL));
+    if(!els.length) return;
+    if(reduce){ return; }                      // leave fully visible, no .reveal class
+    els.forEach(function(el, i){
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i % 4) * 70 + 'ms';
+    });
+    var pending = false;
+    function sweep(){
+      pending = false;
+      var h = window.innerHeight || document.documentElement.clientHeight;
+      for(var i = els.length - 1; i >= 0; i--){
+        if(els[i].getBoundingClientRect().top < h * 0.92){
+          els[i].classList.add('is-in');
+          els.splice(i, 1);                     // reveal once, then stop watching
+        }
+      }
+      if(!els.length){
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+      }
+    }
+    function onScroll(){
+      if(pending) return;
+      pending = true;
+      window.requestAnimationFrame(sweep);
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    sweep();
+    // last-resort safety: never leave content hidden
+    setTimeout(function(){
+      document.querySelectorAll('.reveal:not(.is-in)').forEach(function(el){
+        if(el.getBoundingClientRect().top < (window.innerHeight||0)) el.classList.add('is-in');
+      });
+    }, 1200);
+  });
+})();

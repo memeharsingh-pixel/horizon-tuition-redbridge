@@ -4,23 +4,24 @@
   --blue:#1a4fa0;
   --teal:#0d9488;
   --teal-light:#e0f5f3;
-  --amber:#fecc04;
-  --amber-light:#fff7d9;
+  --amber:#ffc61a;
+  --amber-light:#fff4d1;
+  --amber-ink:#8a6500;
   --white:#ffffff;
-  --grey-50:#f7f5f1;
-  --grey-100:#efe9e0;
-  --grey-200:#e2dccf;
-  --grey-400:#a39d8f;
-  --grey-600:#57544c;
-  --grey-800:#2a2823;
+  --grey-50:#f7f7f7;
+  --grey-100:#ededed;
+  --grey-200:#dcdcdc;
+  --grey-400:#a3a3a3;
+  --grey-600:#737373;
+  --grey-800:#2e2e2e;
   --rule-red:#b3462c;
   --paper-lines:repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(15,45,90,0.05) 28px);
   --ff-head:'Fraunces',serif;
   --ff-body:'DM Sans',sans-serif;
   --radius:12px;
   --radius-sm:8px;
-  --shadow:0 3px 20px rgba(42,40,35,0.10);
-  --shadow-lg:0 10px 44px rgba(42,40,35,0.16);
+  --shadow:0 3px 20px rgba(0,0,0,0.08);
+  --shadow-lg:0 10px 44px rgba(0,0,0,0.14);
 }
 html{scroll-behavior:smooth}
 body{font-family:var(--ff-body);color:var(--grey-800);background:var(--grey-50);font-size:16px;line-height:1.6}
@@ -318,3 +319,28 @@ footer{background:var(--grey-800);color:rgba(255,255,255,0.7);padding:3rem 2rem 
 @media(max-width:480px){.float-contact-txt{display:none}
   .float-contact{padding:0.9rem;font-size:1.1rem}}
 @media print{.float-contact{display:none}}
+
+/* ---- motion ---- */
+html{scroll-behavior:smooth}
+.reveal{opacity:0;transform:translateY(20px);
+  transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+.reveal.is-in{opacity:1;transform:none}
+.card,.pricing-card,.testimonial,.blog-card,.qual-badge,.step{
+  transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s cubic-bezier(.22,.61,.36,1)}
+.card:hover,.pricing-card:hover,.blog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.btn-primary,.btn-outline,.btn-secondary,.float-contact,.nav-cta{
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.btn-primary:hover,.btn-outline:hover,.nav-cta:hover{transform:translateY(-2px)}
+.btn-primary:active,.btn-outline:active,.float-contact:active{transform:translateY(0)}
+.float-contact{animation:float-in .5s cubic-bezier(.22,.61,.36,1) both;animation-delay:.8s}
+@keyframes float-in{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+.hero-inner{animation:hero-up .7s cubic-bezier(.22,.61,.36,1) both}
+@keyframes hero-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+a,button{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1!important;transform:none!important}
+}
