@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/style.css?v=372112e267"/>
+<link rel="stylesheet" href="/assets/style.css?v=476c0dad57"/>
 <style>
 /* Registration-page-only styles, scoped here, not added to the shared stylesheet */
 .reg-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:3rem 2rem}
@@ -172,7 +172,7 @@
       <input type="hidden" name="redirect" value="https://horizontuitionredbridge.co.uk/registration/?sent=1"/>
       <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
 
-      <div class="reg-progress"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="reg-progress"><span></span><span></span><span></span><span></span><span></span></div>
 
       <!-- STUDENT -->
       <div class="reg-section">
@@ -246,26 +246,9 @@
         <div class="form-group"><label>Email address *</label><input type="email" name="Parent Email" id="r-parent-email" required/></div>
       </div>
 
-      <!-- SIBLINGS -->
-      <div class="reg-section">
-        <div class="reg-section-head"><div class="reg-section-num">3</div><h2>Siblings</h2></div>
-        <div class="form-group">
-          <label>Does this student have a sibling also registered, or registering, with Horizon Tuition? *</label>
-          <select name="Has Sibling at Horizon" onchange="toggleOther(this,'sibling-name-field','Yes')" required>
-            <option value="">Select…</option>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-        <div class="form-group reg-other-field" id="sibling-name-field">
-          <label>Sibling's name <span class="reg-opt">(optional, helps us schedule siblings together)</span></label>
-          <input type="text" name="Sibling Name"/>
-        </div>
-      </div>
-
       <!-- EMERGENCY -->
       <div class="reg-section">
-        <div class="reg-section-head"><div class="reg-section-num">4</div><h2>Emergency contacts</h2></div>
+        <div class="reg-section-head"><div class="reg-section-num">3</div><h2>Emergency contacts</h2></div>
         <div class="reg-section-note">Please give two contacts other than the parent/guardian above, where possible.</div>
 
         <p class="reg-subhead">Emergency contact 1</p>
@@ -288,30 +271,12 @@
           <div class="form-group"><label>Mobile number *</label><input type="tel" name="Emergency Contact 1 Mobile" required/></div>
         </div>
 
-        <p class="reg-subhead" style="margin-top:1rem">Emergency contact 2 <span class="reg-opt">(optional)</span></p>
-        <div class="reg-row3">
-          <div class="form-group"><label>Full name</label><input type="text" name="Emergency Contact 2 Name"/></div>
-          <div class="form-group">
-            <label>Relationship</label>
-            <select name="Emergency Contact 2 Relationship" onchange="toggleOther(this,'ec2-rel-other')">
-              <option value="">Select…</option>
-              <option>Grandparent</option>
-              <option>Aunt/Uncle</option>
-              <option>Adult Sibling</option>
-              <option>Family Friend</option>
-              <option>Neighbour</option>
-              <option>Childminder/Nanny</option>
-              <option>Other</option>
-            </select>
-            <div class="reg-other-field" id="ec2-rel-other"><input type="text" name="Emergency Contact 2 Relationship (Other)" placeholder="Please specify"/></div>
-          </div>
-          <div class="form-group"><label>Mobile number</label><input type="tel" name="Emergency Contact 2 Mobile"/></div>
-        </div>
+        
       </div>
 
       <!-- MEDICAL -->
       <div class="reg-section">
-        <div class="reg-section-head"><div class="reg-section-num">5</div><h2>Medical &amp; additional information</h2></div>
+        <div class="reg-section-head"><div class="reg-section-num">4</div><h2>Medical &amp; additional information</h2></div>
         <div class="form-group">
           <label>Medical conditions <span class="reg-opt">(special needs, relevant medical conditions or medication needed)</span></label>
           <textarea name="Medical Info" placeholder="Leave blank if not applicable"></textarea>
@@ -328,7 +293,7 @@
 
       <!-- TERMS -->
       <div class="reg-section">
-        <div class="reg-section-head"><div class="reg-section-num">6</div><h2>Terms &amp; agreement</h2></div>
+        <div class="reg-section-head"><div class="reg-section-num">5</div><h2>Terms &amp; agreement</h2></div>
         <div class="reg-terms">
           <ol>
             <li>'Child' refers to the child who is registered to attend Horizon Tuition.</li>
@@ -388,7 +353,7 @@
   </div>
 </footer>
 
-<script src="/assets/script.js?v=b09503dde4"></script>
+<script src="/assets/script.js?v=68f17d9208"></script>
 <script src="/assets/data/schools-data.js"></script>
 <script>
 // Populates the School dropdown from window.HORIZON_SCHOOLS (a local data
@@ -479,6 +444,17 @@ function validateRegistrationForm(){
   var consent=document.getElementById('r-consent').checked;
   if(!first||!last){showNotif('Please enter the student\'s first and last name.');return false;}
   if(!parentName||!parentEmail){showNotif('Please enter the parent/guardian name and email address.');return false;}
+  var ecName=document.querySelector('[name="Emergency Contact 1 Name"]');
+  var ecMob=document.querySelector('[name="Emergency Contact 1 Mobile"]');
+  var parentMob=document.querySelector('[name="Parent Mobile"]');
+  var norm=function(v){return (v||'').toLowerCase().replace(/\s+/g,' ').trim();};
+  var digits=function(v){return (v||'').replace(/\D/g,'');};
+  if(ecName && norm(ecName.value) && norm(ecName.value)===norm(parentName)){
+    showNotif('The emergency contact must be someone other than the parent or guardian.');
+    ecName.focus();return false;}
+  if(ecMob && parentMob && digits(ecMob.value) && digits(ecMob.value)===digits(parentMob.value)){
+    showNotif('Please give an emergency contact number that is different to your own.');
+    ecMob.focus();return false;}
   if(!signature){showNotif('Please type your full name to sign the form.');return false;}
   if(!consent){showNotif('Please tick the consent checkbox to proceed.');return false;}
   var btn=document.querySelector('#registration-form .btn-submit');

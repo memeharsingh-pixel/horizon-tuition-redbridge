@@ -246,3 +246,57 @@ document.addEventListener('DOMContentLoaded', function(){
     sync();
   });
 });
+
+
+/* --- terms gate: accept only after reading to the end ------------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  var box = document.getElementById('tcScroll');
+  if(!box) return;
+  var wrap = document.getElementById('tcAccept');
+  var check = document.getElementById('tcCheck');
+  var go = document.getElementById('tcContinue');
+  var bar = document.getElementById('tcBar');
+  var hint = document.getElementById('tcHint');
+  var reachedEnd = false;
+
+  function update(){
+    var max = box.scrollHeight - box.clientHeight;
+    var pct = max <= 0 ? 100 : Math.min(100, Math.round(box.scrollTop / max * 100));
+    if(bar) bar.style.width = pct + '%';
+    // max <= 0 means everything already fits on screen, so it has been seen
+    if(!reachedEnd && (max <= 0 || box.scrollTop >= max - 24)){
+      reachedEnd = true;
+      check.disabled = false;
+      wrap.classList.add('ready');
+      if(hint) hint.textContent = 'Thanks for reading. Tick the box below to continue.';
+    }
+  }
+  function sync(){ go.disabled = !(reachedEnd && check.checked); }
+
+  box.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  check.addEventListener('change', sync);
+  update(); sync();
+
+  go.addEventListener('click', function(){
+    if(go.disabled) return;
+    var stamp = new Date().toISOString();
+    var url = go.getAttribute('data-next');
+    var join = url.indexOf('?') === -1 ? '?' : '&';
+    location.href = url + join + 'tc=' + encodeURIComponent(go.getAttribute('data-version'))
+                  + '&tcAt=' + encodeURIComponent(stamp);
+  });
+});
+
+/* --- carry the acceptance into the registration submission -------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  var form = document.getElementById('registration-form');
+  if(!form) return;
+  var p = new URLSearchParams(location.search);
+  if(!p.get('tc')) return;
+  var f = document.createElement('input');
+  f.type = 'hidden';
+  f.name = 'Terms Accepted';
+  f.value = p.get('tc') + ' at ' + (p.get('tcAt') || 'unknown time');
+  form.appendChild(f);
+});
