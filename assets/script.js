@@ -1,23 +1,3 @@
-function toggleMobileNav(){
-  document.getElementById('navLinks').classList.toggle('open');
-  document.getElementById('navToggle').classList.toggle('open');
-}
-function closeMobileNav(){
-  document.getElementById('navLinks').classList.remove('open');
-  document.getElementById('navToggle').classList.remove('open');
-  document.getElementById('navDropdown').classList.remove('open');
-}
-function toggleNavDropdown(e){
-  if(window.innerWidth<=768){
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById('navDropdown').classList.toggle('open');
-  }
-}
-document.addEventListener('click',function(e){
-  var nav=document.querySelector('nav');
-  if(nav && !nav.contains(e.target)){closeMobileNav();}
-});
 function switchKS(btn,contentId){
   var container=btn.closest('section')||btn.closest('.page');
   container.querySelectorAll('.ks-tab').forEach(function(t){t.classList.remove('active');});
@@ -195,3 +175,70 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     }, 1200);
   });
 })();
+
+
+/* --- expandable menu ---------------------------------------------------- */
+function toggleMenu(e){
+  if(e) e.stopPropagation();
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('megaMenu');
+  if(!btn || !menu) return;
+  var open = btn.getAttribute('aria-expanded') === 'true';
+  if(open){ closeMenu(); return; }
+  btn.setAttribute('aria-expanded','true');
+  menu.hidden = false;
+  menu.classList.add('animating');
+  var bd = document.createElement('div');
+  bd.className = 'mega-backdrop';
+  bd.id = 'megaBackdrop';
+  bd.addEventListener('click', closeMenu);
+  document.body.appendChild(bd);
+}
+function closeMenu(){
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('megaMenu');
+  if(!btn || !menu) return;
+  btn.setAttribute('aria-expanded','false');
+  menu.hidden = true;
+  menu.classList.remove('animating');
+  var bd = document.getElementById('megaBackdrop');
+  if(bd) bd.remove();
+}
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('megaMenu');
+  var btn = document.getElementById('menuBtn');
+  if(!menu || menu.hidden) return;
+  if(!menu.contains(e.target) && btn && !btn.contains(e.target)) closeMenu();
+});
+
+/* --- review rail arrows -------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.reviews-scroller').forEach(function(track){
+    if(track.parentNode.classList.contains('reviews-rail')) return;
+    var rail = document.createElement('div');
+    rail.className = 'reviews-rail';
+    track.parentNode.insertBefore(rail, track);
+    rail.appendChild(track);
+    var prev = document.createElement('button');
+    prev.className = 'rail-btn rail-prev'; prev.type = 'button';
+    prev.setAttribute('aria-label','Previous reviews'); prev.innerHTML = '&#8249;';
+    var next = document.createElement('button');
+    next.className = 'rail-btn rail-next'; next.type = 'button';
+    next.setAttribute('aria-label','More reviews'); next.innerHTML = '&#8250;';
+    rail.appendChild(prev); rail.appendChild(next);
+    function step(){
+      var card = track.firstElementChild;
+      return card ? card.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+    }
+    prev.addEventListener('click', function(){ track.scrollBy({left:-step(), behavior:'smooth'}); });
+    next.addEventListener('click', function(){ track.scrollBy({left: step(), behavior:'smooth'}); });
+    function sync(){
+      prev.disabled = track.scrollLeft < 8;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+    }
+    track.addEventListener('scroll', sync, {passive:true});
+    window.addEventListener('resize', sync);
+    sync();
+  });
+});

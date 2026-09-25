@@ -75,28 +75,51 @@
       <img src="/assets/images/photo1.png" alt="Horizon Tuition Redbridge" style="height:38px;width:auto;display:block"/>
       <div class="logo-sub">Give your child the best start!</div>
     </div>
-    <button class="nav-toggle" id="navToggle" onclick="toggleMobileNav()" aria-label="Menu"><span></span><span></span><span></span></button>
-    <div class="nav-links" id="navLinks">
-      <a href="/">Home</a>
-      <a href="/about-us/">About</a>
-      <div class="nav-dropdown" id="navDropdown">
-        <a class="has-arrow" href="/programmes/" onclick="toggleNavDropdown(event)">Programmes</a>
-        <div class="nav-dropdown-menu">
-          <a href="/maths-tuition/">📐 Maths Tuition</a>
-          <a href="/english-tuition/">📖 English Tuition</a>
-          <a href="/science-tuition/">🔬 Science</a>
-          <a href="/11-plus-preparation/">🏫 11+ Preparation</a>
-          <a href="/sats-preparation/">📝 SATs Preparation</a>
-          <a href="/gcse-support/">🎓 GCSE Support</a>
-          <a href="/sen-dyslexia-support/">💙 SEN &amp; Dyslexia</a>
-          <a href="/our-centre/">🏛 Our Centre</a>
-        </div>
+    <div class="nav-actions">
+      <a href="/contact/" class="nav-cta"><span class="cta-long">Book Assessment</span><span class="cta-short">Book</span></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="megaMenu" onclick="toggleMenu(event)">
+        <span class="menu-bars"><span></span><span></span><span></span></span>
+        <span class="menu-btn-txt">Menu</span>
+      </button>
+    </div>
+  </div>
+  <div class="mega" id="megaMenu" hidden>
+    <div class="mega-inner">
+      <div class="mega-col">
+        <h4>Programmes</h4>
+        <a href="/maths-tuition/">📐 Maths Tuition</a>
+        <a href="/english-tuition/">📖 English Tuition</a>
+        <a href="/science-tuition/">🔬 Science Tuition</a>
+        <a href="/11-plus-preparation/">🏫 11+ Preparation</a>
+        <a href="/sats-preparation/">📝 SATs Preparation</a>
+        <a href="/gcse-support/">🎓 GCSE Support</a>
+        <a href="/sen-dyslexia-support/">💙 SEN &amp; Dyslexia</a>
+        <a href="/programmes/" class="mega-all">All programmes →</a>
       </div>
-      <a href="/pricing/">Pricing</a>
-      <a href="/testimonials/">Results</a>
-      <a href="/resources/">Resources</a>
-      <a href="/registration/">Register</a>
-      <a href="/contact/" class="nav-cta">Book Assessment</a>
+      <div class="mega-col">
+        <h4>About Horizon</h4>
+        <a href="/">Home</a>
+        <a href="/about-us/">About Us</a>
+        <a href="/our-centre/">Our Centre</a>
+        <a href="/how-it-works/">How It Works</a>
+        <a href="/safeguarding/">Safeguarding</a>
+      </div>
+      <div class="mega-col">
+        <h4>For Parents</h4>
+        <a href="/pricing/">Pricing</a>
+        <a href="/testimonials/">Reviews</a>
+        <a href="/resources/">Free Resources</a>
+        <a href="/registration/">Register a Student</a>
+        <a href="/contact/">Book a Free Assessment</a>
+      </div>
+      <div class="mega-col mega-contact">
+        <h4>Get in Touch</h4>
+        <a href="tel:02080586815">📞 020 8058 6815</a>
+        <a href="tel:07735106791">📱 07735 106791</a>
+        <a href="mailto:info@horizontuitionredbridge.co.uk">✉ Email us</a>
+        <p>5 State Parade,<br/>Barkingside IG6 2EY</p>
+        <p class="mega-hours">Mon-Fri 4-6:30pm<br/>Sat 10am-3:45pm<br/>Sun 12pm-1:45pm</p>
+      </div>
     </div>
   </div>
 </nav>
@@ -128,7 +151,7 @@
         </div>
       </div>
       <div class="footer-col"><h4>Programmes</h4><a href="/maths-tuition/">Maths Tuition</a><a href="/english-tuition/">English Tuition</a><a href="/11-plus-preparation/">11+ Preparation</a><a href="/sats-preparation/">SATs Preparation</a><a href="/gcse-support/">GCSE Support</a><a href="/sen-dyslexia-support/">SEN &amp; Dyslexia</a></div>
-      <div class="footer-col"><h4>Information</h4><a href="/about-us/">About Us</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How It Works</a><a href="/testimonials/">Results</a><a href="/resources/">Resources</a><a href="/registration/">Register</a><a href="/safeguarding/">Safeguarding</a></div>
+      <div class="footer-col"><h4>Information</h4><a href="/about-us/">About Us</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How It Works</a><a href="/testimonials/">Reviews</a><a href="/resources/">Resources</a><a href="/registration/">Register</a><a href="/safeguarding/">Safeguarding</a></div>
       <div class="footer-col"><h4>Legal</h4><a href="/privacy-policy/">Privacy Policy</a><a href="/safeguarding/">Safeguarding</a><h4 style="margin-top:1rem">Opening Hours</h4><span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">Open 7 days · Mon-Fri: 4pm-6:30pm</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">Saturday: 10am-3:45pm</span><span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">Sunday: 12pm-1:45pm</span><span style="font-size:0.72rem;color:rgba(255,255,255,0.35);font-style:italic;margin-top:8px">Hours occasionally vary. We’ll always let you know</span></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Horizon Tuition Redbridge. All rights reserved. · Powered by <a href="https://aukizan.com" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.6)">Aukizan</a></span><div style="display:flex;gap:1rem"><a href="/privacy-policy/">Privacy</a><a href="/safeguarding/">Safeguarding</a></div></div>

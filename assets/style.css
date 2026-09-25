@@ -344,3 +344,77 @@ a,button{transition:color .2s ease,background-color .2s ease,border-color .2s ea
     transition-duration:.01ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1!important;transform:none!important}
 }
+
+/* ---- single expandable menu ---- */
+.nav-actions{display:flex;align-items:center;gap:0.75rem;margin-left:auto}
+.menu-btn{display:inline-flex;align-items:center;gap:0.55rem;background:transparent;
+  border:1.5px solid var(--grey-200);color:var(--navy);font-family:var(--ff-body);
+  font-weight:600;font-size:0.9rem;padding:0.55rem 0.95rem;border-radius:999px;cursor:pointer}
+.menu-btn:hover{border-color:var(--navy);background:var(--grey-50)}
+.menu-bars{display:inline-flex;flex-direction:column;justify-content:center;gap:4px;width:18px}
+.menu-bars span{display:block;height:2px;width:100%;background:var(--navy);border-radius:2px;
+  transition:transform .28s cubic-bezier(.22,.61,.36,1),opacity .18s ease}
+.menu-btn[aria-expanded="true"] .menu-bars span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] .menu-bars span:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] .menu-bars span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mega{position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid var(--grey-200);
+  box-shadow:var(--shadow-lg);z-index:120;overflow:hidden}
+.mega[hidden]{display:none}
+.mega.animating{animation:mega-open .3s cubic-bezier(.22,.61,.36,1) both}
+@keyframes mega-open{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.mega-inner{max-width:1200px;margin:0 auto;padding:2rem 2rem 2.25rem;display:grid;
+  grid-template-columns:repeat(4,1fr);gap:2rem}
+.mega-col h4{font-family:var(--ff-head);font-size:0.78rem;text-transform:uppercase;
+  letter-spacing:1px;color:var(--grey-400);margin:0 0 0.9rem}
+.mega-col a{display:block;padding:0.4rem 0;color:var(--grey-800);text-decoration:none;
+  font-size:0.92rem;border-radius:6px}
+.mega-col a:hover{color:var(--navy);transform:translateX(3px)}
+.mega-all{margin-top:0.5rem;font-weight:600;color:var(--teal)!important}
+.mega-contact p{font-size:0.85rem;color:var(--grey-600);line-height:1.6;margin:0.6rem 0 0}
+.mega-hours{font-size:0.8rem!important;color:var(--grey-400)!important}
+.mega-backdrop{position:fixed;inset:0;background:rgba(15,45,90,0.25);z-index:110;
+  animation:fade-in .25s ease both}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@media(max-width:860px){
+  .mega-inner{grid-template-columns:1fr 1fr;gap:1.25rem;padding:1.5rem}
+  .menu-btn-txt{display:none}
+}
+@media(max-width:560px){
+  .mega-inner{grid-template-columns:1fr;max-height:70vh;overflow-y:auto}
+  .nav-cta{font-size:0.82rem;padding:0.5rem 0.8rem}
+}
+
+/* ---- review rail arrows ---- */
+.reviews-rail{position:relative}
+.rail-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid var(--grey-200);background:#fff;color:var(--navy);
+  font-size:1.2rem;line-height:1;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center}
+.rail-btn:hover{background:var(--amber);border-color:var(--amber)}
+.rail-btn[disabled]{opacity:0;pointer-events:none}
+.rail-prev{left:-10px}
+.rail-next{right:-10px}
+@media(max-width:700px){.rail-btn{display:none}}
+
+/* ---- cross-page transitions ---- */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .2s ease both}
+::view-transition-new(root){animation:vt-in .3s cubic-bezier(.22,.61,.36,1) both}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none!important}
+  .mega.animating{animation:none!important}
+}
+
+/* compact header on small screens */
+.cta-short{display:none}
+@media(max-width:620px){
+  .cta-long{display:none}
+  .cta-short{display:inline}
+  .logo-sub{display:none}
+  .logo img{height:32px!important}
+  .nav-actions{gap:0.45rem}
+  .nav-cta{white-space:nowrap;padding:0.5rem 0.85rem;font-size:0.85rem}
+  .menu-btn{padding:0.5rem 0.7rem}
+}
