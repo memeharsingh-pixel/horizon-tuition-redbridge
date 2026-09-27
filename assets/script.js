@@ -176,7 +176,17 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     }
     window.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', onScroll);
-    sweep();
+
+    // Let the hidden state paint for one frame before revealing anything.
+    // Adding .reveal and .is-in in the same frame means the browser never
+    // renders opacity:0, so there is no transition and content simply
+    // appears. Above the fold that is every element on the page.
+    var started = false;
+    function start(){ if(started) return; started = true; sweep(); }
+    if(window.requestAnimationFrame){
+      requestAnimationFrame(function(){ requestAnimationFrame(start); });
+    }
+    setTimeout(start, 120);      // if rAF is throttled, do not wait forever
     // last-resort safety: never leave content hidden
     setTimeout(function(){
       // Last resort: drop the hiding class outright rather than adding the
