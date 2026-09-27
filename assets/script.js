@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function(){
   update();
 });
 
-/* --- 11+ timeline: clickable steps and a draggable slider --------------- */
+/* --- 11+ timeline: continuous drag, colour tracks progress --------------- */
 document.addEventListener('DOMContentLoaded', function(){
   var tl = document.getElementById('plusTimeline');
   if(!tl) return;
@@ -376,21 +376,50 @@ document.addEventListener('DOMContentLoaded', function(){
   var panels = [].slice.call(tl.querySelectorAll('.tl-panel'));
   var range = document.getElementById('tlRange');
   var fill = document.getElementById('tlFill');
-  function show(i){
-    i = Math.max(0, Math.min(dots.length - 1, parseInt(i, 10) || 0));
+  var last = -1;
+  var STOPS = [[59,130,246], [255,198,26], [22,163,74]];   // blue, amber, green
+
+  function mix(a, b, t){
+    return 'rgb(' + Math.round(a[0]+(b[0]-a[0])*t) + ','
+                  + Math.round(a[1]+(b[1]-a[1])*t) + ','
+                  + Math.round(a[2]+(b[2]-a[2])*t) + ')';
+  }
+  function colourAt(p){                                    // p is 0..1
+    var seg = p * (STOPS.length - 1);
+    var i = Math.min(STOPS.length - 2, Math.floor(seg));
+    return mix(STOPS[i], STOPS[i+1], seg - i);
+  }
+  function apply(){
+    var max = parseFloat(range.max) || 1000;
+    var p = Math.min(1, Math.max(0, parseFloat(range.value) / max));
+    tl.style.setProperty('--tl-c', colourAt(p));
+    if(fill) fill.style.width = (p * 100) + '%';
+
+    var i = Math.round(p * (dots.length - 1));
     dots.forEach(function(d, n){
       d.classList.toggle('is-on', n === i);
       d.classList.toggle('is-done', n < i);
       d.setAttribute('aria-pressed', n === i ? 'true' : 'false');
     });
-    panels.forEach(function(p, n){
-      p.classList.remove('is-on');
-      if(n === i){ void p.offsetWidth; p.classList.add('is-on'); }
-    });
-    if(fill) fill.style.width = (i / (dots.length - 1) * 100) + '%';
-    if(range && String(range.value) !== String(i)) range.value = i;
+    if(i !== last){
+      last = i;
+      panels.forEach(function(pn, n){
+        pn.classList.remove('is-on');
+        if(n === i){ void pn.offsetWidth; pn.classList.add('is-on'); }
+      });
+      var label = dots[i] ? dots[i].textContent.trim() : '';
+      range.setAttribute('aria-valuetext', label);
+    }
   }
-  dots.forEach(function(d){ d.addEventListener('click', function(){ show(d.getAttribute('data-i')); }); });
-  if(range) range.addEventListener('input', function(){ show(range.value); });
-  show(0);
+
+  range.addEventListener('input', apply);
+  range.addEventListener('change', apply);
+  dots.forEach(function(d){
+    d.addEventListener('click', function(){
+      var n = parseInt(d.getAttribute('data-i'), 10) || 0;
+      range.value = Math.round(n / (dots.length - 1) * (parseFloat(range.max) || 1000));
+      apply();
+    });
+  });
+  apply();
 });

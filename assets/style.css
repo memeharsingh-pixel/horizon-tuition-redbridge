@@ -505,26 +505,45 @@ nav.menu-open{z-index:200}
 .reg-progress span.done::after{width:100%}
 .reg-progress span.part::after{width:50%}
 
-/* ---- 11+ timeline ---- */
-.tl{margin-top:0.5rem}
+/* ---- 11+ timeline ----
+   Progress colour runs blue (early) to amber (building) to green (ready).
+   Blue rather than red at the start: an early start is a good position to be
+   in, not a failure state. */
+.tl{margin-top:0.5rem;--tl-c:#3B82F6}
 .tl-track{position:relative;display:flex;justify-content:space-between;align-items:center;
   height:36px;margin:0 6px}
-.tl-track::before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;
-  background:var(--grey-200);border-radius:3px;transform:translateY(-50%)}
-.tl-fill{position:absolute;left:0;top:50%;height:3px;width:0;background:var(--teal);
-  border-radius:3px;transform:translateY(-50%);transition:width .38s cubic-bezier(.22,.61,.36,1)}
+.tl-track::before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;
+  background:var(--grey-200);border-radius:4px;transform:translateY(-50%)}
+.tl-fill{position:absolute;left:0;top:50%;height:4px;width:0;background:var(--tl-c);
+  border-radius:4px;transform:translateY(-50%);
+  transition:background-color .18s linear}
 .tl-dot{position:relative;z-index:2;width:18px;height:18px;border-radius:50%;padding:0;
   border:3px solid var(--grey-200);background:#fff;cursor:pointer;
-  transition:border-color .28s ease,transform .28s cubic-bezier(.22,.61,.36,1)}
+  transition:border-color .25s ease,transform .25s cubic-bezier(.22,.61,.36,1),
+             box-shadow .25s ease}
 .tl-dot span{position:absolute;top:22px;left:50%;transform:translateX(-50%);white-space:nowrap;
-  font-size:0.78rem;font-weight:600;color:var(--grey-400);transition:color .28s ease}
-.tl-dot.is-on{border-color:var(--teal);transform:scale(1.25)}
+  font-size:0.78rem;font-weight:600;color:var(--grey-400);transition:color .25s ease}
+.tl-dot.is-done{border-color:var(--tl-c)}
+.tl-dot.is-on{border-color:var(--tl-c);transform:scale(1.3);
+  box-shadow:0 0 0 6px color-mix(in srgb, var(--tl-c) 18%, transparent)}
 .tl-dot.is-on span{color:var(--navy)}
-.tl-dot.is-done{border-color:var(--teal)}
-.tl-range{width:100%;margin:1.75rem 0 0;accent-color:var(--teal);cursor:pointer}
+.tl-range{width:100%;margin:1.75rem 0 0;cursor:grab;accent-color:var(--tl-c);
+  -webkit-appearance:none;appearance:none;background:transparent}
+.tl-range:active{cursor:grabbing}
+.tl-range:focus-visible{outline:3px solid var(--tl-c);outline-offset:4px;border-radius:999px}
+.tl-range::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:var(--grey-100)}
+.tl-range::-moz-range-track{height:6px;border-radius:6px;background:var(--grey-100)}
+.tl-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;
+  border-radius:50%;background:#fff;border:4px solid var(--tl-c);cursor:grab;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18);transition:background-color .18s linear,
+  border-color .18s linear,transform .15s ease}
+.tl-range::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;
+  border:4px solid var(--tl-c);cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,0.18)}
+.tl-range:active::-webkit-slider-thumb{transform:scale(1.12)}
 .tl-panels{margin-top:1rem;position:relative}
 .tl-panel{display:none;padding:1.1rem 1.25rem;background:var(--grey-50);
-  border-left:3px solid var(--teal);border-radius:var(--radius-sm)}
+  border-left:3px solid var(--tl-c);border-radius:var(--radius-sm);
+  transition:border-color .18s linear}
 .tl-panel.is-on{display:block;opacity:1;transform:none;
   animation:ks-in .3s cubic-bezier(.22,.61,.36,1)}
 .tl-panel h4{font-family:var(--ff-head);color:var(--navy);margin:0 0 0.35rem;font-size:1rem}
