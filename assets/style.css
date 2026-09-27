@@ -553,3 +553,17 @@ nav.menu-open{z-index:200}
 @media(prefers-reduced-motion:reduce){
   .ks-content.active,.tl-panel.is-on{animation:none;opacity:1;transform:none}
 }
+
+/* ---- dismissible contact bar ---- */
+.phone-bar{position:relative}
+.no-phone-bar .phone-bar{display:none!important}
+.phone-bar-close{position:absolute;top:50%;right:8px;transform:translateY(-50%);
+  background:transparent;border:0;color:rgba(255,255,255,0.45);font-size:1.25rem;
+  line-height:1;cursor:pointer;padding:6px 9px;border-radius:6px;
+  transition:color .2s ease,background-color .2s ease}
+.phone-bar-close:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.12)}
+.phone-bar-close:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+@media(max-width:700px){
+  .phone-bar{padding-right:38px}
+  .phone-bar-close{font-size:1.4rem;padding:8px 10px;top:8px;transform:none}
+}

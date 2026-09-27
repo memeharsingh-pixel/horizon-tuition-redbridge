@@ -149,9 +149,9 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       pending = false;
       var h = window.innerHeight || document.documentElement.clientHeight;
       var doc = document.documentElement;
-      // Trigger before the element reaches the fold, so it is already moving
-      // by the time it comes into view rather than popping in late.
-      var line = h * 1.15;
+      // Trigger well before the element reaches the fold, so it is already
+      // moving by the time it comes into view rather than popping in late.
+      var line = h * 1.3;
       // If there is no scroll left to give, nothing below can ever cross the
       // line. Short pages would otherwise strand their last rows invisible.
       var maxScroll = Math.max(0, doc.scrollHeight - h);
@@ -435,3 +435,10 @@ document.addEventListener('DOMContentLoaded', function(){
   });
   apply();
 });
+
+
+/* --- let people dismiss the contact bar --------------------------------- */
+function hidePhoneBar(){
+  document.documentElement.classList.add('no-phone-bar');
+  try{ localStorage.setItem('htr-bar','off'); }catch(e){}
+}
