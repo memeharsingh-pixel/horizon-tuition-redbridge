@@ -140,15 +140,12 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     var els = [].slice.call(document.querySelectorAll(SEL));
     if(!els.length) return;
     if(reduce){ return; }                      // leave fully visible, no .reveal class
-    els.forEach(function(el, i){
-      el.classList.add('reveal');
-      el.style.transitionDelay = (i % 4) * 70 + 'ms';
-    });
+    els.forEach(function(el){ el.classList.add('reveal'); });
     var pending = false;
     function sweep(){
       pending = false;
-      var h = window.innerHeight || document.documentElement.clientHeight;
       var doc = document.documentElement;
+      var h = window.innerHeight || doc.clientHeight || 800;
       // Trigger well before the element reaches the fold, so it is already
       // moving by the time it comes into view rather than popping in late.
       var line = h * 1.3;
@@ -159,6 +156,9 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       var cut = 0;
       for(var i = 0; i < els.length; i++){
         if(atEnd || els[i].getBoundingClientRect().top < line){
+          // stagger within this batch, not by position in the page: otherwise
+          // anything revealed later on scroll starts on a long fixed delay
+          els[i].style.transitionDelay = Math.min(i, 5) * 90 + 'ms';
           els[i].classList.add('is-in');
           cut = i + 1;                          // reveal once, then stop watching
         } else break;                           // document order: the rest are lower
@@ -184,9 +184,11 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     var started = false;
     function start(){ if(started) return; started = true; sweep(); }
     if(window.requestAnimationFrame){
-      requestAnimationFrame(function(){ requestAnimationFrame(start); });
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){ setTimeout(start, 180); });
+      });
     }
-    setTimeout(start, 120);      // if rAF is throttled, do not wait forever
+    setTimeout(start, 600);      // if rAF is throttled, do not wait forever
     // last-resort safety: never leave content hidden
     setTimeout(function(){
       // Last resort: drop the hiding class outright rather than adding the
