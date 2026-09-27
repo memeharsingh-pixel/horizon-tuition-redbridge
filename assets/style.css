@@ -461,3 +461,12 @@ nav.menu-open{z-index:200}
 .res-link-t::after{content:" \2197";color:var(--teal);font-weight:400}
 .res-link[href^="/"] .res-link-t::after{content:" \2192"}
 .res-link-d{display:block;color:var(--grey-600);font-size:0.85rem;line-height:1.55}
+
+/* ---- comfortable tap targets on phones ---- */
+@media(max-width:700px){
+  .phone-bar{flex-wrap:wrap;gap:0.15rem 0.9rem;padding:0.5rem 1rem}
+  .phone-bar span{display:inline-flex;align-items:center}
+  .phone-bar a{display:inline-flex;align-items:center;min-height:36px;padding:0 0.15rem}
+  .footer-contact a{display:inline-flex;align-items:center;min-height:34px}
+  .footer-col a{display:inline-flex;align-items:center;min-height:32px}
+}
