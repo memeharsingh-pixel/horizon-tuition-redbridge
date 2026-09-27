@@ -135,7 +135,7 @@ section{padding:4rem 2rem}
 .keystage-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
 .ks-tab{padding:0.5rem 1.25rem;border-radius:var(--radius-sm);border:2px solid var(--grey-200);background:#fff;font-size:0.875rem;font-weight:600;color:var(--grey-600);cursor:pointer;transition:all 0.2s}
 .ks-tab.active{border-color:var(--navy);background:var(--navy);color:#fff}
-.ks-content{display:none}
+
 .ks-content.active{display:block}
 .ks-content h3{font-size:1.25rem;color:var(--navy);margin-bottom:1rem}
 .topics-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.5rem;margin-bottom:1.5rem}
@@ -222,9 +222,9 @@ section{padding:4rem 2rem}
 .faq-list{display:flex;flex-direction:column;gap:0.75rem}
 .faq-item{border:1px solid var(--grey-200);border-radius:var(--radius-sm);overflow:hidden}
 .faq-q{padding:1rem 1.25rem;font-weight:600;font-size:0.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--navy);background:#fff}
-.faq-a{padding:0 1.25rem;max-height:0;overflow:hidden;transition:all 0.3s;font-size:0.875rem;color:var(--grey-600);line-height:1.7}
-.faq-a.open{padding:0.75rem 1.25rem 1rem;max-height:500px}
-.faq-arrow{transition:transform 0.2s;font-size:0.8rem;opacity:0.5}
+
+
+
 .faq-arrow.open{transform:rotate(180deg)}
 .map-embed{background:var(--grey-100);border-radius:var(--radius);height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--grey-200);color:var(--grey-600);gap:0.5rem;font-size:0.9rem;margin-top:1rem}
 .notif{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--teal);color:#fff;padding:0.875rem 1.5rem;border-radius:var(--radius-sm);font-size:0.875rem;font-weight:600;box-shadow:var(--shadow-lg);z-index:999;transform:translateY(100px);opacity:0;transition:all 0.3s}
@@ -469,4 +469,68 @@ nav.menu-open{z-index:200}
   .phone-bar a{display:inline-flex;align-items:center;min-height:36px;padding:0 0.15rem}
   .footer-contact a{display:inline-flex;align-items:center;min-height:34px}
   .footer-col a{display:inline-flex;align-items:center;min-height:32px}
+}
+
+/* ---- stat strip with count-up ---- */
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.5rem;
+  text-align:center}
+.stat-num{display:block;font-family:var(--ff-head);font-size:2.4rem;font-weight:700;
+  color:var(--amber);line-height:1.1}
+.stat-label{display:block;color:rgba(255,255,255,0.75);font-size:0.85rem;margin-top:0.35rem}
+
+/* ---- FAQ: ease open instead of snapping ---- */
+.faq-a{padding:0 1.25rem;max-height:0;overflow:hidden;font-size:0.875rem;color:var(--grey-600);
+  line-height:1.7;
+  transition:max-height .32s cubic-bezier(.4,0,.2,1),padding .32s cubic-bezier(.4,0,.2,1),
+             opacity .22s ease;opacity:0}
+.faq-a.open{padding:0.75rem 1.25rem 1rem;max-height:520px;opacity:1}
+.faq-arrow{transition:transform .28s cubic-bezier(.22,.61,.36,1);font-size:0.8rem;opacity:0.5}
+.faq-arrow.open{transform:rotate(180deg)}
+
+/* ---- key stage tabs: crossfade instead of jump ---- */
+.ks-content{display:none}
+/* the visible state must not depend on the animation running: if it never
+   fires, the content is still on screen */
+.ks-content.active{display:block;opacity:1;transform:none;
+  animation:ks-in .32s cubic-bezier(.22,.61,.36,1)}
+/* transform only: never animate opacity for content that must be readable,
+   or a stalled animation leaves the panel invisible */
+@keyframes ks-in{from{transform:translateY(10px)}to{transform:none}}
+
+/* ---- registration progress fills as the form is completed ---- */
+.reg-progress span{flex:1;height:4px;background:var(--grey-200);border-radius:4px;
+  position:relative;overflow:hidden}
+.reg-progress span::after{content:"";position:absolute;inset:0;width:0;background:var(--teal);
+  border-radius:4px;transition:width .45s cubic-bezier(.22,.61,.36,1)}
+.reg-progress span.done::after{width:100%}
+.reg-progress span.part::after{width:50%}
+
+/* ---- 11+ timeline ---- */
+.tl{margin-top:0.5rem}
+.tl-track{position:relative;display:flex;justify-content:space-between;align-items:center;
+  height:36px;margin:0 6px}
+.tl-track::before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;
+  background:var(--grey-200);border-radius:3px;transform:translateY(-50%)}
+.tl-fill{position:absolute;left:0;top:50%;height:3px;width:0;background:var(--teal);
+  border-radius:3px;transform:translateY(-50%);transition:width .38s cubic-bezier(.22,.61,.36,1)}
+.tl-dot{position:relative;z-index:2;width:18px;height:18px;border-radius:50%;padding:0;
+  border:3px solid var(--grey-200);background:#fff;cursor:pointer;
+  transition:border-color .28s ease,transform .28s cubic-bezier(.22,.61,.36,1)}
+.tl-dot span{position:absolute;top:22px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font-size:0.78rem;font-weight:600;color:var(--grey-400);transition:color .28s ease}
+.tl-dot.is-on{border-color:var(--teal);transform:scale(1.25)}
+.tl-dot.is-on span{color:var(--navy)}
+.tl-dot.is-done{border-color:var(--teal)}
+.tl-range{width:100%;margin:1.75rem 0 0;accent-color:var(--teal);cursor:pointer}
+.tl-panels{margin-top:1rem;position:relative}
+.tl-panel{display:none;padding:1.1rem 1.25rem;background:var(--grey-50);
+  border-left:3px solid var(--teal);border-radius:var(--radius-sm)}
+.tl-panel.is-on{display:block;opacity:1;transform:none;
+  animation:ks-in .3s cubic-bezier(.22,.61,.36,1)}
+.tl-panel h4{font-family:var(--ff-head);color:var(--navy);margin:0 0 0.35rem;font-size:1rem}
+.tl-panel h4 span{font-family:var(--ff-body);font-weight:400;font-size:0.82rem;
+  color:var(--grey-400)}
+.tl-panel p{margin:0;color:var(--grey-600);font-size:0.9rem;line-height:1.7}
+@media(prefers-reduced-motion:reduce){
+  .ks-content.active,.tl-panel.is-on{animation:none;opacity:1;transform:none}
 }

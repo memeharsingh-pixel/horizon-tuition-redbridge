@@ -300,3 +300,97 @@ document.addEventListener('DOMContentLoaded', function(){
   f.value = p.get('tc') + ' at ' + (p.get('tcAt') || 'unknown time');
   form.appendChild(f);
 });
+
+
+/* --- count up numbers when they scroll into view ------------------------ */
+document.addEventListener('DOMContentLoaded', function(){
+  var nums = [].slice.call(document.querySelectorAll('.stat-num[data-count]'));
+  if(!nums.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ nums.forEach(function(n){ n.textContent = n.getAttribute('data-count'); }); return; }
+  function run(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var start = null, dur = 900;
+    // the element already shows the real number; only blank it once we know
+    // a frame is actually running, so a stalled rAF never leaves a "0" on screen
+    function frame(t){
+      if(start === null) start = t;
+      var p = Math.min(1, (t - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased);
+      if(p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  var pending = nums.slice();
+  function sweep(){
+    var h = window.innerHeight || 0;
+    for(var i = pending.length - 1; i >= 0; i--){
+      if(pending[i].getBoundingClientRect().top < h * 0.9){
+        run(pending[i]); pending.splice(i, 1);
+      }
+    }
+    if(!pending.length) window.removeEventListener('scroll', onScroll);
+  }
+  var queued = false;
+  function onScroll(){ if(queued) return; queued = true;
+    requestAnimationFrame(function(){ queued = false; sweep(); }); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  sweep();
+  // never leave a zero on screen
+  setTimeout(function(){ pending.forEach(function(n){
+    n.textContent = n.getAttribute('data-count'); }); }, 1600);
+});
+
+/* --- registration progress fills as sections are completed -------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  var form = document.getElementById('registration-form');
+  var bar = document.querySelector('.reg-progress');
+  if(!form || !bar) return;
+  var pips = [].slice.call(bar.querySelectorAll('span'));
+  var sections = [].slice.call(form.querySelectorAll('.reg-section'));
+  if(!pips.length || !sections.length) return;
+  function update(){
+    sections.forEach(function(sec, i){
+      if(!pips[i]) return;
+      var req = [].slice.call(sec.querySelectorAll('[required]'));
+      var filled = req.filter(function(f){
+        return f.type === 'checkbox' ? f.checked : String(f.value || '').trim() !== '';
+      }).length;
+      // sections with nothing mandatory count as complete, otherwise the
+      // optional medical section stays grey however much a parent fills in
+      pips[i].classList.toggle('done', req.length === 0 || filled === req.length);
+      pips[i].classList.toggle('part', filled > 0 && filled < req.length);
+    });
+  }
+  form.addEventListener('input', update);
+  form.addEventListener('change', update);
+  update();
+});
+
+/* --- 11+ timeline: clickable steps and a draggable slider --------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  var tl = document.getElementById('plusTimeline');
+  if(!tl) return;
+  var dots = [].slice.call(tl.querySelectorAll('.tl-dot'));
+  var panels = [].slice.call(tl.querySelectorAll('.tl-panel'));
+  var range = document.getElementById('tlRange');
+  var fill = document.getElementById('tlFill');
+  function show(i){
+    i = Math.max(0, Math.min(dots.length - 1, parseInt(i, 10) || 0));
+    dots.forEach(function(d, n){
+      d.classList.toggle('is-on', n === i);
+      d.classList.toggle('is-done', n < i);
+      d.setAttribute('aria-pressed', n === i ? 'true' : 'false');
+    });
+    panels.forEach(function(p, n){
+      p.classList.remove('is-on');
+      if(n === i){ void p.offsetWidth; p.classList.add('is-on'); }
+    });
+    if(fill) fill.style.width = (i / (dots.length - 1) * 100) + '%';
+    if(range && String(range.value) !== String(i)) range.value = i;
+  }
+  dots.forEach(function(d){ d.addEventListener('click', function(){ show(d.getAttribute('data-i')); }); });
+  if(range) range.addEventListener('input', function(){ show(range.value); });
+  show(0);
+});
