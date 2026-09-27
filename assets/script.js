@@ -146,9 +146,11 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       pending = false;
       var doc = document.documentElement;
       var h = window.innerHeight || doc.clientHeight || 800;
-      // Trigger well before the element reaches the fold, so it is already
-      // moving by the time it comes into view rather than popping in late.
-      var line = h * 1.3;
+      // Just below the fold. Much earlier than this and the transition has
+      // already finished before the element scrolls into view, so the motion
+      // is never actually seen; much later and it pops in after you are
+      // already looking at the space it occupies.
+      var line = h * 1.05;
       // If there is no scroll left to give, nothing below can ever cross the
       // line. Short pages would otherwise strand their last rows invisible.
       var maxScroll = Math.max(0, doc.scrollHeight - h);

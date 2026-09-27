@@ -322,8 +322,8 @@ footer{background:var(--grey-800);color:rgba(255,255,255,0.7);padding:3rem 2rem 
 
 /* ---- motion ---- */
 html{scroll-behavior:smooth}
-.reveal{opacity:0;transform:translateY(14px);
-  transition:opacity .45s cubic-bezier(.22,.61,.36,1),transform .45s cubic-bezier(.22,.61,.36,1)}
+.reveal{opacity:0;transform:translateY(26px);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1),transform .5s cubic-bezier(.22,.61,.36,1)}
 .reveal.is-in{opacity:1;transform:none}
 .card,.pricing-card,.testimonial,.blog-card,.qual-badge,.step{
   transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s cubic-bezier(.22,.61,.36,1)}
