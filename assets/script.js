@@ -148,9 +148,17 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     function sweep(){
       pending = false;
       var h = window.innerHeight || document.documentElement.clientHeight;
+      var doc = document.documentElement;
+      // Trigger before the element reaches the fold, so it is already moving
+      // by the time it comes into view rather than popping in late.
+      var line = h * 1.15;
+      // If there is no scroll left to give, nothing below can ever cross the
+      // line. Short pages would otherwise strand their last rows invisible.
+      var maxScroll = Math.max(0, doc.scrollHeight - h);
+      var atEnd = (window.pageYOffset || doc.scrollTop || 0) >= maxScroll - 2;
       var cut = 0;
       for(var i = 0; i < els.length; i++){
-        if(els[i].getBoundingClientRect().top < h * 0.92){
+        if(atEnd || els[i].getBoundingClientRect().top < line){
           els[i].classList.add('is-in');
           cut = i + 1;                          // reveal once, then stop watching
         } else break;                           // document order: the rest are lower
@@ -171,10 +179,14 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     sweep();
     // last-resort safety: never leave content hidden
     setTimeout(function(){
+      // Last resort: drop the hiding class outright rather than adding the
+      // shown one. Removing .reveal takes opacity:0 out of play entirely, so
+      // the element is visible even if transitions never painted.
       document.querySelectorAll('.reveal:not(.is-in)').forEach(function(el){
-        if(el.getBoundingClientRect().top < (window.innerHeight||0)) el.classList.add('is-in');
+        el.classList.remove('reveal');
+        el.style.transitionDelay = '';
       });
-    }, 1200);
+    }, 2500);
   });
 })();
 
