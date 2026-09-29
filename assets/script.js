@@ -57,6 +57,30 @@ function showNotif(msg){
   setTimeout(function(){n.classList.remove('show');},4000);
 }
 
+/* --- contact map, loaded only when asked for ----------------------------
+   The Google embed sets cookies the moment it loads, so it stays out of the
+   page until a parent actually wants the map. The address and a directions
+   link are in the markup either way, so this never hides information. */
+function showMap(btn){
+  var wrap=btn.closest('.map-embed');
+  if(!wrap) return;
+  var q=wrap.getAttribute('data-q');
+  if(!q) return;
+  wrap.innerHTML='';
+  wrap.style.display='block';
+  wrap.style.padding='0';
+  wrap.style.overflow='hidden';
+  var f=document.createElement('iframe');
+  f.src='https://maps.google.com/maps?q='+q+'&output=embed';
+  f.setAttribute('width','100%');
+  f.setAttribute('height','100%');
+  f.setAttribute('style','border:0;display:block');
+  f.setAttribute('loading','lazy');
+  f.setAttribute('referrerpolicy','no-referrer-when-downgrade');
+  f.setAttribute('title','Horizon Tuition Redbridge location');
+  wrap.appendChild(f);
+}
+
 /* --- 11+ Mock Exams promo popup --- */
 function initPromoPopup(){
   var mocks=[
