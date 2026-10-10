@@ -134,8 +134,12 @@ section{padding:5rem 2rem}
 .phero .eyebrow{display:inline-block;font-size:0.72rem;font-weight:700;
   letter-spacing:1.4px;text-transform:uppercase;color:var(--acc-ink);
   margin-bottom:0.85rem}
+/* 26ch, because the line breaks are authored per page and the longest is 25
+   characters. At the previous 18ch six of the eight headlines wrapped inside
+   their own reveal span, which left a stray third line sitting indented under
+   a two line animation. */
 .phero h1{font-size:clamp(1.85rem,4.4vw,3rem);color:var(--navy);font-weight:700;
-  line-height:1.14;letter-spacing:-0.015em;max-width:18ch;margin-bottom:1rem}
+  line-height:1.14;letter-spacing:-0.015em;max-width:26ch;margin-bottom:1rem}
 .phero .ln{display:block;overflow:hidden}
 .phero .ln>i{display:block;font-style:normal;transform:translateY(106%);
   transition:transform 1s var(--ease-o)}
@@ -143,6 +147,7 @@ section{padding:5rem 2rem}
 .phero h1:not(.masked) .ln>i{transform:none;transition:none}
 .phero.in h1 .ln>i{transform:none}
 .phero.in h1 .ln:nth-child(2)>i{transition-delay:.09s}
+.phero.in h1 .ln:nth-child(3)>i{transition-delay:.18s}   /* GCSE runs to three */
 .phero .hl{display:inline;white-space:nowrap;color:var(--navy);
   -webkit-box-decoration-break:clone;box-decoration-break:clone;
   background-image:linear-gradient(180deg,transparent 16%,var(--amber) 16%,
@@ -151,6 +156,10 @@ section{padding:5rem 2rem}
   background-size:0% 100%;padding:0 4px;
   transition:background-size 1s var(--ease-o) .5s}
 .phero.in .hl{background-size:100% 100%}
+/* the highlight's own 4px padding indents any line that starts with it, which
+   on GCSE, SEND and Online left the marked line sitting out of alignment with
+   the ones above it. Pull it back without losing the padding. */
+.phero h1 .ln>i>.hl:first-child{margin-left:-4px}
 .phero p.sub{color:var(--grey-600);max-width:48ch;line-height:1.75;
   margin-bottom:2rem;opacity:0;transform:translateY(10px);
   transition:opacity .7s var(--ease-o) .3s,transform .7s var(--ease-o) .3s}
