@@ -166,8 +166,10 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     if(reduce){ return; }                      // leave fully visible, no .reveal class
     els.forEach(function(el){ el.classList.add('reveal'); });
     var pending = false;
+    var sweepRan = false;            // proof the machinery actually works
     function sweep(){
       pending = false;
+      sweepRan = true;
       var doc = document.documentElement;
       var h = window.innerHeight || doc.clientHeight || 800;
       // Just below the fold. Much earlier than this and the transition has
@@ -207,8 +209,26 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
     // Adding .reveal and .is-in in the same frame means the browser never
     // renders opacity:0, so there is no transition and content simply
     // appears. Above the fold that is every element on the page.
+    // A second, independent trigger. The sweep handles jumps and restored
+    // scroll positions, which an observer genuinely does miss. The observer
+    // handles the case where scroll events never arrive at all. Either one
+    // firing is enough, and whichever is second finds .is-in already set.
+    // Attached from start() so the hidden state has painted first.
+    var watched = els.slice();
+    function attachIO(){
+      if(!window.IntersectionObserver) return;
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        });
+      }, {rootMargin:'0px 0px -5% 0px'});
+      watched.forEach(function(el){ io.observe(el); });
+    }
+
     var started = false;
-    function start(){ if(started) return; started = true; sweep(); }
+    function start(){ if(started) return; started = true; sweep(); attachIO(); }
     if(window.requestAnimationFrame){
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){ setTimeout(start, 180); });
@@ -232,9 +252,13 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
         el.style.transitionDelay = '';
       });
     }
-    setTimeout(function(){ start(); rescue(true); }, 2500);
-    // Absolute backstop: whatever happens, nothing stays hidden for long.
-    setTimeout(function(){ rescue(false); }, 12000);
+    setTimeout(function(){ rescue(true); }, 2500);
+    // Backstop, but only when the sweep never managed to run at all. A plain
+    // wall-clock strip is wrong on a long page: scrolling down through the
+    // pinned session block alone takes longer than any sane timer, so a timed
+    // strip killed the fade for everything below it. If sweep() has run even
+    // once, scrolling is what reveals content and no rescue is needed.
+    setTimeout(function(){ if(!sweepRan) rescue(false); }, 12000);
   });
 })();
 
