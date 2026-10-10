@@ -513,6 +513,49 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 
+/* --- review rail: bring the centred card forward ------------------------
+   An observer rooted on the rail itself, with a narrow band across its
+   middle. Whichever card overlaps that band is the one being read, so it
+   scales up and the rest sit back. No scroll listener, so nothing runs
+   per frame while the rail is being dragged. */
+(function(){
+  var rail = document.querySelector('.reviews-scroller');
+  if(!rail) return;
+  var cards = [].slice.call(rail.querySelectorAll('.testimonial'));
+  if(!cards.length) return;
+
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Without an observer the cards would stay shrunk and faded, so opt the
+  // whole rail out instead and show them all at full size.
+  if(reduce || !window.IntersectionObserver){
+    rail.classList.add('no-focus');
+    return;
+  }
+
+  function focus(el){
+    cards.forEach(function(c){ c.classList.toggle('is-focus', c === el); });
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) focus(e.target); });
+  }, {
+    root: rail,
+    // a thin strip down the centre of the rail
+    rootMargin: '0px -48% 0px -48%',
+    threshold: 0
+  });
+  cards.forEach(function(c){ io.observe(c); });
+
+  // nothing is centred until the first scroll, so start on the first card
+  focus(cards[0]);
+
+  // if the observer never fires, do not leave the rail dimmed
+  setTimeout(function(){
+    if(!rail.querySelector('.is-focus')) rail.classList.add('no-focus');
+  }, 3000);
+})();
+
 /* --- let people dismiss the contact bar --------------------------------- */
 /* The bar holds the phone numbers, email and address, so there has to be a
    way back once it is dismissed. The button only takes up space while the

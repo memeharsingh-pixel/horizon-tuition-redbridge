@@ -282,7 +282,10 @@ footer{background:var(--grey-800);color:rgba(255,255,255,0.7);padding:3rem 2rem 
 /* Batch 2: horizontal review scroller + persistent contact button */
 .reviews-scroller{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;
   padding:0.5rem 0 1.25rem;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-.reviews-scroller > *{flex:0 0 min(380px,85%);scroll-snap-align:start}
+/* Taller and narrower than wide, so fewer than three fit and the one in the
+   middle is clearly the one you are reading. Snapping to centre rather than
+   start is what parks a card under the focal band. */
+.reviews-scroller > *{flex:0 0 min(330px,74vw);scroll-snap-align:center}
 .reviews-scroller::-webkit-scrollbar{height:8px}
 .reviews-scroller::-webkit-scrollbar-thumb{background:var(--grey-200);border-radius:4px}
 .float-contact{position:fixed;right:18px;bottom:18px;z-index:900;display:flex;align-items:center;
@@ -596,11 +599,42 @@ nav.menu-open{z-index:200}
 /* the rail hard-cut at both edges, which hid that it scrolls. A mask fades
    the cards out instead, so there is a visible hint of more to the right. */
 .reviews-scroller{
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,
-    #000 calc(100% - 44px),transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0,#000 18px,
-    #000 calc(100% - 44px),transparent 100%);
-  padding-left:4px}
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 90px,
+    #000 calc(100% - 90px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 90px,
+    #000 calc(100% - 90px),transparent 100%);
+  /* room for the focal card to scale up without being clipped, and enough
+     inline padding that the first and last card can still reach the centre */
+  padding:2.5rem calc(50% - min(165px,37vw)) 3rem;
+  /* wide enough that fewer than three cards ever fit, which keeps the centre
+     one dominant instead of reading as a row of three */
+  gap:3rem;
+  scroll-padding-inline:calc(50% - min(165px,37vw))}
+
+/* ---- focal carousel ----
+   The card nearest the middle comes forward and the rest sit back, so one
+   review reads as the one you are on. The focus class is set by an observer
+   watching a narrow band across the centre of the rail. */
+.reviews-scroller .testimonial{
+  min-height:440px;display:flex;flex-direction:column;
+  transform:scale(0.86);opacity:0.5;
+  transform-origin:center center;
+  transition:transform .5s var(--ease-o),opacity .5s var(--ease-o),
+             box-shadow .5s var(--ease-o)}
+.reviews-scroller .testimonial p{flex:1}
+.reviews-scroller .testimonial.is-focus{
+  transform:scale(1);opacity:1;
+  box-shadow:0 22px 48px rgba(15,45,90,0.18)}
+/* hover should not fight the focal scale */
+.reviews-scroller .testimonial:hover{transform:scale(0.88)}
+.reviews-scroller .testimonial.is-focus:hover{transform:scale(1.01)}
+/* if the observer never runs, every card sits at full size rather than
+   leaving the whole rail shrunken and faded */
+.reviews-scroller.no-focus .testimonial{transform:none;opacity:1}
+
+@media(prefers-reduced-motion:reduce){
+  .reviews-scroller .testimonial{transform:none!important;opacity:1!important}
+}
 @media(max-width:700px){
   .reviews-scroller{-webkit-mask-image:linear-gradient(90deg,#000 0,
     #000 calc(100% - 30px),transparent 100%);
