@@ -159,7 +159,7 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var SEL = '.section-head,.card,.pricing-card,.testimonial,.blog-card,.qual-badge,'
-          + '.step,.policy-section,.hiw-step,.trust-item';
+          + '.policy-section,.hiw-step';
   document.addEventListener('DOMContentLoaded', function(){
     var els = [].slice.call(document.querySelectorAll(SEL));
     if(!els.length) return;
