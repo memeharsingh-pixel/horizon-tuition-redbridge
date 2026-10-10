@@ -910,6 +910,27 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   transition:background-size .4s var(--ease-o);padding-bottom:3px}
 .lk:hover,.lk:focus-visible{background-size:100% 2px}
 
+/* the same underline draw on footer links, which previously only shifted
+   colour. Sized to the text rather than the block so it does not run the
+   full column width. */
+.footer-col a{background-image:linear-gradient(var(--amber),var(--amber));
+  background-repeat:no-repeat;background-position:0 calc(100% - 2px);
+  background-size:0% 1.5px;
+  transition:color .2s ease,background-size .35s var(--ease-o);
+  width:fit-content}
+.footer-col a:hover,.footer-col a:focus-visible{background-size:100% 1.5px}
+
+/* key stage tabs: the active one gets a rule that slides under it, so
+   switching reads as moving along a row rather than two separate repaints */
+.ks-tab{position:relative;overflow:hidden}
+.ks-tab::after{content:"";position:absolute;left:12px;right:12px;bottom:5px;
+  height:2px;background:var(--amber);border-radius:2px;
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .32s var(--ease-o)}
+.ks-tab.active::after{transform:scaleX(1)}
+.ks-tab:hover::after{transform:scaleX(0.4)}
+.ks-tab.active:hover::after{transform:scaleX(1)}
+
 @media(prefers-reduced-motion:reduce){
   .ln>i{transform:none!important}
   .hl{background-size:100% 100%!important;color:var(--navy)!important}

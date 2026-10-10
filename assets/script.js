@@ -158,8 +158,13 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
    cannot get stuck - anything at or above the fold is always revealed. */
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Keep this in step with the markup. The testimonials page carried nine
+  // reviews that never animated because it uses .testi-card, not
+  // .testimonial, and the contact and programme pages matched nothing here
+  // at all, so whole pages sat still while the rest of the site moved.
   var SEL = '.section-head,.card,.pricing-card,.testimonial,.blog-card,.qual-badge,'
-          + '.policy-section,.hiw-step';
+          + '.policy-section,.hiw-step,.testi-card,.contact-info-card,'
+          + '.topics-list,.res-link';
   document.addEventListener('DOMContentLoaded', function(){
     var els = [].slice.call(document.querySelectorAll(SEL));
     if(!els.length) return;
