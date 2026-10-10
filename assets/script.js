@@ -215,16 +215,26 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       });
     }
     setTimeout(start, 600);      // if rAF is throttled, do not wait forever
-    // last-resort safety: never leave content hidden
-    setTimeout(function(){
-      // Last resort: drop the hiding class outright rather than adding the
-      // shown one. Removing .reveal takes opacity:0 out of play entirely, so
-      // the element is visible even if transitions never painted.
+
+    // Rescue, in two tiers. Dropping .reveal takes opacity:0 out of play
+    // entirely, so the element is visible even if transitions never painted.
+    //
+    // The first tier only rescues what is actually on screen. A blanket strip
+    // here used to kill the animation for the whole page whenever someone read
+    // the hero for a few seconds before scrolling, which is most visitors: the
+    // content below then simply appeared instead of fading, and the reveal
+    // looked broken because it fired inconsistently.
+    function rescue(onlyVisible){
+      var h = window.innerHeight || document.documentElement.clientHeight || 800;
       document.querySelectorAll('.reveal:not(.is-in)').forEach(function(el){
+        if(onlyVisible && el.getBoundingClientRect().top > h) return;
         el.classList.remove('reveal');
         el.style.transitionDelay = '';
       });
-    }, 2500);
+    }
+    setTimeout(function(){ start(); rescue(true); }, 2500);
+    // Absolute backstop: whatever happens, nothing stays hidden for long.
+    setTimeout(function(){ rescue(false); }, 12000);
   });
 })();
 
@@ -507,19 +517,6 @@ function hidePhoneBar(){
       setTimeout(function(){ unmask(); hero.classList.add('in'); }, 4000);
     }
   }
-
-  /* ---- split one sentence into words ---- */
-  document.querySelectorAll('[data-split]').forEach(function(p){
-    var words = p.textContent.trim().split(/\s+/);
-    p.textContent = '';
-    words.forEach(function(w,i){
-      var el = document.createElement('w');
-      el.textContent = w;
-      el.style.transitionDelay = (i*40) + 'ms';
-      p.appendChild(el);
-      if(i < words.length-1) p.appendChild(document.createTextNode(' '));
-    });
-  });
 
   /* ---- odometers ---- */
   document.querySelectorAll('.odo').forEach(function(o){

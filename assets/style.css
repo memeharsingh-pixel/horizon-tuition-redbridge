@@ -653,9 +653,12 @@ section:nth-of-type(even):not([style*="background"]){background:var(--grey-50)}
 /* ---- hero ---- */
 .nhero{position:relative;min-height:min(72vh,620px);display:flex;align-items:flex-end;
   overflow:hidden}
-.nhero-bg{position:absolute;inset:0;z-index:0}
+.nhero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+/* blurred so the room reads as a backdrop and no child's face is
+   identifiable. scaled up because blur fades out at the edges and would
+   otherwise show a soft border against the scrim. */
 .nhero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 40%;
-  display:block}
+  display:block;filter:blur(7px);transform:scale(1.08)}
 .nhero-scrim{position:absolute;inset:0;z-index:1;
   background:linear-gradient(98deg,rgba(9,26,52,0.95) 0%,rgba(9,26,52,0.82) 40%,
     rgba(9,26,52,0.26) 74%,rgba(9,26,52,0.08) 100%)}
@@ -720,11 +723,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .mk b{display:block;color:var(--navy);font-size:0.98rem;font-family:var(--ff-head)}
 .mk span{color:var(--grey-600);font-size:0.85rem}
 
-/* ---- word by word ---- */
-.ww w{display:inline-block;opacity:0;transform:translateY(5px);
-  transition:opacity .5s var(--ease-o),transform .5s var(--ease-o)}
-.ww.in w{opacity:1;transform:none}
-
 /* ---- pinned session sequence ---- */
 .pin{display:grid;grid-template-columns:1fr 1fr;gap:3.4rem;align-items:start}
 .pin-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center}
@@ -783,16 +781,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .yxfade{animation:yxf .45s var(--ease-o)}
 @keyframes yxf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ---- big quote ---- */
-.nquote .mark{display:block;width:50px;height:3px;background:var(--rule-red);
-  margin-bottom:1.5rem;transform:scaleX(0);transform-origin:left;
-  transition:transform .8s var(--ease-o)}
-.nquote.in .mark{transform:none}
-.nquote blockquote{font-family:var(--ff-head);font-size:clamp(1.4rem,3.2vw,2.3rem);
-  color:var(--navy);font-weight:600;line-height:1.3;max-width:21ch;
-  letter-spacing:-0.02em}
-.nquote .who{margin-top:1.25rem;font-size:0.87rem;color:var(--grey-600)}
-
 /* ---- photo wipe row ---- */
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
 .shot{margin:0}
@@ -820,12 +808,10 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .ln>i{transform:none!important}
   .hl{background-size:100% 100%!important;color:var(--navy)!important}
   .nhero-sub,.nhero-btns{opacity:1!important;transform:none!important}
-  .ww w{opacity:1!important;transform:none!important}
   .pin-step{opacity:1!important}
   .shot .win{clip-path:none!important}
   .shot img{transform:none!important}
   .nmarks path{stroke-dashoffset:0!important}
-  .nquote .mark{transform:none!important}
   .prog i{transform:scaleX(0)!important}
 }
 @media(max-width:900px){
