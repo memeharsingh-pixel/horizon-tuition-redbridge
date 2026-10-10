@@ -127,6 +127,11 @@ section{padding:5rem 2rem}
 .pricing-card .price{font-family:var(--ff-head);font-size:2.5rem;font-weight:700;color:var(--navy)}
 .pricing-card .price sup{font-size:1.2rem;vertical-align:super}
 .pricing-card .price-note{font-size:0.8rem;color:var(--grey-400);margin-top:0.25rem}
+/* the three tiers are different session lengths, so the headline prices are
+   not comparable on their own. a parent reading £16 next to £20 was seeing
+   the worse hourly rate as the cheaper option. */
+.pricing-card .price-hour{font-size:0.82rem;font-weight:600;color:var(--amber-ink);
+  margin-top:0.4rem;font-variant-numeric:tabular-nums}
 .pricing-card ul{list-style:none;text-align:left;margin:1.5rem 0;display:flex;flex-direction:column;gap:0.625rem}
 .pricing-card li{font-size:0.875rem;color:var(--grey-600);display:flex;align-items:flex-start;gap:0.5rem}
 .pricing-card li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0;margin-top:1px}
