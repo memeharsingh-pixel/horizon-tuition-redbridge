@@ -729,8 +729,13 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   background-image:linear-gradient(180deg,transparent 16%,var(--amber) 16%,
     var(--amber) 88%,transparent 88%);
   background-repeat:no-repeat;background-position:left center;background-size:0% 100%;
-  transition:background-size 1s var(--ease-o) .55s;padding:0 4px;color:var(--navy)}
-.nhero.in .hl{background-size:100% 100%}
+  /* the word starts white so it is readable against the navy scrim. navy ink
+     only arrives once the yellow is actually behind it, otherwise the word is
+     navy on navy for the 1.5s before the sweep finishes. */
+  color:#fff;
+  transition:background-size 1s var(--ease-o) .55s,color .25s linear .8s;
+  padding:0 4px}
+.nhero.in .hl{background-size:100% 100%;color:var(--navy)}
 .nhero-sub{color:rgba(255,255,255,0.86);font-size:1.02rem;max-width:42ch;
   margin-bottom:1.5rem;line-height:1.7}
 .nhero-btns{display:flex;gap:0.75rem;flex-wrap:wrap}
@@ -867,7 +872,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 
 @media(prefers-reduced-motion:reduce){
   .ln>i{transform:none!important}
-  .hl{background-size:100% 100%!important}
+  .hl{background-size:100% 100%!important;color:var(--navy)!important}
   .nhero-sub,.nhero-btns{opacity:1!important;transform:none!important}
   .ww w{opacity:1!important;transform:none!important}
   .pin-step{opacity:1!important}
