@@ -84,7 +84,7 @@
  ]
 }
 </script>
-<script>try{if(localStorage.getItem("htr-bar")==="off")document.documentElement.classList.add("no-phone-bar");}catch(e){}</script>
+<script>try{var b=localStorage.getItem("htr-bar"),t=b==="off"?0:+b;if(t&&Date.now()-t<2592e6)document.documentElement.classList.add("no-phone-bar");else if(b)localStorage.removeItem("htr-bar");}catch(e){}</script>
 </head>
 <body>
 
@@ -355,7 +355,7 @@
   </div>
 </footer>
 
-<script src="/assets/script.js?v=c1ec55fceb"></script>
+<script src="/assets/script.js?v=a48f299599"></script>
 <script src="/assets/data/schools-data.js"></script>
 <script>
 // Populates the School dropdown from window.HORIZON_SCHOOLS (a local data

@@ -512,7 +512,10 @@ document.addEventListener('DOMContentLoaded', function(){
 /* --- let people dismiss the contact bar --------------------------------- */
 function hidePhoneBar(){
   document.documentElement.classList.add('no-phone-bar');
-  try{ localStorage.setItem('htr-bar','off'); }catch(e){}
+  /* a timestamp, not a permanent flag: the bar carries the phone
+     numbers, email and address, so one stray click should not remove
+     it for good. It returns after 30 days. */
+  try{ localStorage.setItem('htr-bar', String(Date.now())); }catch(e){}
 }
 
 
