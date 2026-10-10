@@ -105,6 +105,87 @@ section{padding:5rem 2rem}
 .qual-check{width:28px;height:28px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.8rem;flex-shrink:0;margin-top:2px}
 .qual-badge h4{font-size:0.85rem;color:var(--navy);margin-bottom:0.25rem}
 .qual-badge p{font-size:0.78rem;color:var(--grey-600)}
+/* ===== programme page hero =================================================
+   Light rather than a navy slab, to sit with the rest of the page instead of
+   fighting it. Each subject keeps the hue it already had, but as an accent on
+   a bright ground rather than a full background.
+
+   Two tones per subject on purpose. The bright one is for rules and washes,
+   which carry no contrast requirement. The ink one is for the eyebrow, which
+   is small text: teal, green and sky all fall below 4.5:1 on white at their
+   bright value, so they would have failed as label colours. This is the same
+   split the palette already makes with --amber-ink. */
+.phero{--acc:var(--blue);--acc-ink:var(--blue);
+  position:relative;overflow:hidden;padding:3.2rem 2rem 0;
+  background:linear-gradient(160deg,
+    color-mix(in srgb,var(--acc) 9%,#fff) 0%,
+    var(--white) 58%);
+  border-bottom:1px solid var(--grey-200)}
+.phero.maths     {--acc:#1a4fa0;--acc-ink:#1a4fa0}
+.phero.english   {--acc:#0d9488;--acc-ink:#0a6e66}
+.phero.science   {--acc:#2f8f4e;--acc-ink:#246b3b}
+.phero.elevenplus{--acc:#6b46c1;--acc-ink:#5a3ab0}
+.phero.sats      {--acc:#d19a00;--acc-ink:#8a6500}
+.phero.gcse      {--acc:#c43f67;--acc-ink:#9c2f4f}
+.phero.send      {--acc:#1a7ab0;--acc-ink:#15618c}
+.phero.online    {--acc:#0e9aa0;--acc-ink:#0e7490}
+
+.phero-in{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.phero .eyebrow{display:inline-block;font-size:0.72rem;font-weight:700;
+  letter-spacing:1.4px;text-transform:uppercase;color:var(--acc-ink);
+  margin-bottom:0.85rem}
+.phero h1{font-size:clamp(1.85rem,4.4vw,3rem);color:var(--navy);font-weight:700;
+  line-height:1.14;letter-spacing:-0.015em;max-width:18ch;margin-bottom:1rem}
+.phero .ln{display:block;overflow:hidden}
+.phero .ln>i{display:block;font-style:normal;transform:translateY(106%);
+  transition:transform 1s var(--ease-o)}
+/* visible is the base state: a timeout strips .masked if the reveal stalls */
+.phero h1:not(.masked) .ln>i{transform:none;transition:none}
+.phero.in h1 .ln>i{transform:none}
+.phero.in h1 .ln:nth-child(2)>i{transition-delay:.09s}
+.phero .hl{display:inline;white-space:nowrap;color:var(--navy);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  background-image:linear-gradient(180deg,transparent 16%,var(--amber) 16%,
+    var(--amber) 88%,transparent 88%);
+  background-repeat:no-repeat;background-position:left center;
+  background-size:0% 100%;padding:0 4px;
+  transition:background-size 1s var(--ease-o) .5s}
+.phero.in .hl{background-size:100% 100%}
+.phero p.sub{color:var(--grey-600);max-width:48ch;line-height:1.75;
+  margin-bottom:2rem;opacity:0;transform:translateY(10px);
+  transition:opacity .7s var(--ease-o) .3s,transform .7s var(--ease-o) .3s}
+.phero.in p.sub{opacity:1;transform:none}
+
+.phero-facts{display:flex;flex-wrap:wrap;border-top:1px solid var(--grey-200)}
+.phero-facts div{flex:1;min-width:150px;padding:1.1rem 1.4rem 1.25rem;
+  position:relative}
+.phero-facts div+div{border-left:1px solid var(--grey-200)}
+.phero-facts div::before{content:"";position:absolute;left:0;top:-1px;
+  width:100%;height:2px;background:var(--acc);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .7s var(--ease-o)}
+.phero.in .phero-facts div::before{transform:scaleX(1)}
+.phero.in .phero-facts div:nth-child(2)::before{transition-delay:.12s}
+.phero.in .phero-facts div:nth-child(3)::before{transition-delay:.24s}
+.phero-facts b{display:block;font-family:var(--ff-head);font-size:1.4rem;
+  color:var(--navy);font-weight:700;line-height:1.15;letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums}
+.phero-facts span{display:block;font-size:0.76rem;color:var(--grey-600);
+  margin-top:0.35rem}
+.phero-facts div:first-child{padding-left:0}
+
+@media(max-width:640px){
+  .phero{padding:2.4rem 1.25rem 0}
+  .phero-facts div{min-width:100%;padding-left:0;padding-right:0}
+  .phero-facts div+div{border-left:none;border-top:1px solid var(--grey-200)}
+}
+@media(prefers-reduced-motion:reduce){
+  .phero .ln>i{transform:none!important}
+  .phero .hl{background-size:100% 100%!important}
+  .phero p.sub{opacity:1!important;transform:none!important}
+  .phero-facts div::before{transform:scaleX(1)!important}
+}
+
 .prog-hero{padding:3rem 2rem;background:var(--navy);color:#fff}
 .prog-hero-inner{max-width:1200px;margin:0 auto}
 .prog-hero h1{font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:0.75rem}

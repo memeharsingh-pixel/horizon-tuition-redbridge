@@ -608,8 +608,8 @@ function hidePhoneBar(){
     });
   }
 
-  /* ---- hero ---- */
-  var hero = document.getElementById('nhero');
+  /* ---- hero: homepage uses #nhero, programme pages use #phero ---- */
+  var hero = document.getElementById('nhero') || document.getElementById('phero');
   if(hero){
     if(reduce){ hero.classList.add('in'); unmask(); }
     else {
