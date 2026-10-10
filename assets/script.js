@@ -176,7 +176,11 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       // already finished before the element scrolls into view, so the motion
       // is never actually seen; much later and it pops in after you are
       // already looking at the space it occupies.
-      var line = h * 1.05;
+      // Fire once the element is genuinely inside the viewport, not below it.
+      // At 1.05 the transition started 5% below the fold and had essentially
+      // finished by the time the element scrolled into view, so the motion was
+      // paid for but never seen. 0.88 leaves most of it still to run on screen.
+      var line = h * 0.88;
       // If there is no scroll left to give, nothing below can ever cross the
       // line. Short pages would otherwise strand their last rows invisible.
       var maxScroll = Math.max(0, doc.scrollHeight - h);
@@ -223,7 +227,7 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
           e.target.classList.add('is-in');
           io.unobserve(e.target);
         });
-      }, {rootMargin:'0px 0px -5% 0px'});
+      }, {rootMargin:'0px 0px -12% 0px'});   // matches the sweep's 0.88 line
       watched.forEach(function(el){ io.observe(el); });
     }
 
@@ -576,7 +580,6 @@ function hidePhoneBar(){
   var stats = document.querySelector('.nstats');
   if(reduce){
     items.forEach(function(el){ el.classList.add('in'); });
-    document.querySelectorAll('.shots').forEach(function(s){ s.classList.add('shown'); });
     roll(document);
   } else if(items.length || stats){
     if(items.length){
@@ -595,7 +598,6 @@ function hidePhoneBar(){
     }
     /* safety net for anything whose base state hides content */
     setTimeout(function(){
-      document.querySelectorAll('.shots').forEach(function(s){ s.classList.add('shown'); });
       roll(document);
     }, 5000);
   }

@@ -296,8 +296,8 @@ footer{background:var(--grey-800);color:rgba(255,255,255,0.7);padding:3rem 2rem 
 
 /* ---- motion ---- */
 html{scroll-behavior:smooth}
-.reveal{opacity:0;transform:translateY(26px);
-  transition:opacity .5s cubic-bezier(.22,.61,.36,1),transform .5s cubic-bezier(.22,.61,.36,1)}
+.reveal{opacity:0;transform:translateY(40px);
+  transition:opacity .62s cubic-bezier(.22,1,.36,1),transform .78s cubic-bezier(.22,1,.36,1)}
 .reveal.is-in{opacity:1;transform:none}
 .card,.pricing-card,.testimonial,.blog-card,.qual-badge{
   transition:transform .25s cubic-bezier(.22,.61,.36,1),box-shadow .25s cubic-bezier(.22,.61,.36,1)}
@@ -845,22 +845,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .yxfade{animation:yxf .45s var(--ease-o)}
 @keyframes yxf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ---- photo wipe row ---- */
-.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
-.shot{margin:0}
-.shot .win{overflow:hidden;border-radius:var(--radius-sm);aspect-ratio:3/2;
-  clip-path:inset(0 100% 0 0);transition:clip-path 1s var(--ease-o)}
-.shot img{width:100%;height:100%;object-fit:cover;transform:scale(1.07);
-  transition:transform 1.3s var(--ease-o);display:block}
-.shots.in .win{clip-path:inset(0 0 0 0)}
-.shots.in img{transform:none}
-.shots.in .shot:nth-child(2) .win,.shots.in .shot:nth-child(2) img{transition-delay:.12s}
-.shots.in .shot:nth-child(3) .win,.shots.in .shot:nth-child(3) img{transition-delay:.24s}
-.shots.shown .win{clip-path:none!important}
-.shots.shown img{transform:none!important}
-.shot figcaption{font-size:0.8rem;color:var(--grey-600);margin-top:0.55rem;
-  padding-left:0.6rem;border-left:2px solid var(--amber)}
-
 /* ---- link underline draw, applied to the in-page text links ---- */
 .lk{color:var(--navy);font-weight:600;text-decoration:none;
   background-image:linear-gradient(var(--amber),var(--amber));
@@ -873,8 +857,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .hl{background-size:100% 100%!important;color:var(--navy)!important}
   .nhero-sub,.nhero-btns{opacity:1!important;transform:none!important}
   .pin-step{opacity:1!important}
-  .shot .win{clip-path:none!important}
-  .shot img{transform:none!important}
   .nmarks path{stroke-dashoffset:0!important}
   .prog i{transform:scaleX(0)!important}
 }
@@ -894,5 +876,4 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
     border-bottom:1px solid var(--grey-200)}
   .yx-body{grid-template-columns:1fr}
   .yx-right{min-height:200px;order:-1}
-  .shots{grid-template-columns:1fr}
 }
