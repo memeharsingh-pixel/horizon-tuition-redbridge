@@ -510,6 +510,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 /* --- let people dismiss the contact bar --------------------------------- */
+/* The bar holds the phone numbers, email and address, so there has to be a
+   way back once it is dismissed. The button only takes up space while the
+   bar is hidden, so it costs nothing the rest of the time. */
+function showPhoneBar(){
+  document.documentElement.classList.remove('no-phone-bar');
+  try{ localStorage.removeItem('htr-bar'); }catch(e){}
+}
 function hidePhoneBar(){
   document.documentElement.classList.add('no-phone-bar');
   /* a timestamp, not a permanent flag: the bar carries the phone
