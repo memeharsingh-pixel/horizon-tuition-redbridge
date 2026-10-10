@@ -480,3 +480,187 @@ function hidePhoneBar(){
   document.documentElement.classList.add('no-phone-bar');
   try{ localStorage.setItem('htr-bar','off'); }catch(e){}
 }
+
+
+/* --- homepage: hero reveal, odometers, pinned sequence, year explorer ----
+   Every block below is guarded, so this file stays safe on pages that do
+   not contain these elements. */
+(function(){
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function unmask(){
+    document.querySelectorAll('.masked').forEach(function(h){
+      h.classList.remove('masked');
+    });
+  }
+
+  /* ---- hero ---- */
+  var hero = document.getElementById('nhero');
+  if(hero){
+    if(reduce){ hero.classList.add('in'); unmask(); }
+    else {
+      requestAnimationFrame(function(){
+        setTimeout(function(){ hero.classList.add('in'); }, 120);
+      });
+      /* visibility must never depend on an animation having run */
+      setTimeout(function(){ unmask(); hero.classList.add('in'); }, 4000);
+    }
+  }
+
+  /* ---- split one sentence into words ---- */
+  document.querySelectorAll('[data-split]').forEach(function(p){
+    var words = p.textContent.trim().split(/\s+/);
+    p.textContent = '';
+    words.forEach(function(w,i){
+      var el = document.createElement('w');
+      el.textContent = w;
+      el.style.transitionDelay = (i*40) + 'ms';
+      p.appendChild(el);
+      if(i < words.length-1) p.appendChild(document.createTextNode(' '));
+    });
+  });
+
+  /* ---- odometers ---- */
+  document.querySelectorAll('.odo').forEach(function(o){
+    String(o.dataset.n).split('').forEach(function(d,i){
+      var wrap = document.createElement('span'); wrap.className = 'odo-d';
+      var col  = document.createElement('span'); col.className  = 'odo-col';
+      for(var n=0;n<=9;n++){
+        var s = document.createElement('s'); s.textContent = n; col.appendChild(s);
+      }
+      col.dataset.target = d;
+      col.style.transitionDelay = (i*110) + 'ms';
+      wrap.appendChild(col); o.appendChild(wrap);
+    });
+  });
+  function roll(root){
+    root.querySelectorAll('.odo-col').forEach(function(c){
+      c.style.transform = 'translateY(-' + c.dataset.target + 'em)';
+    });
+  }
+
+  /* ---- reveal driver ---- */
+  var items = [].slice.call(document.querySelectorAll('[data-anim]'));
+  var stats = document.querySelector('.nstats');
+  if(reduce){
+    items.forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('.shots').forEach(function(s){ s.classList.add('shown'); });
+    roll(document);
+  } else if(items.length || stats){
+    if(items.length){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      },{threshold:0.25});
+      items.forEach(function(el){ io.observe(el); });
+    }
+    if(stats){
+      var io2 = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ roll(e.target); io2.disconnect(); } });
+      },{threshold:0.4});
+      io2.observe(stats);
+    }
+    /* safety net for anything whose base state hides content */
+    setTimeout(function(){
+      document.querySelectorAll('.shots').forEach(function(s){ s.classList.add('shown'); });
+      roll(document);
+    }, 5000);
+  }
+
+  /* ---- pinned session sequence ---- */
+  var steps = [].slice.call(document.querySelectorAll('.pin-step'));
+  var panes = [].slice.call(document.querySelectorAll('.pin-pane'));
+  var badge = document.getElementById('pin-badge');
+  if(steps.length && panes.length){
+    var io3 = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var i = steps.indexOf(e.target);
+        steps.forEach(function(s,n){ s.classList.toggle('on', n===i); });
+        panes.forEach(function(p,n){ p.classList.toggle('on', n===i); });
+        if(badge) badge.textContent = steps[i].dataset.badge;
+      });
+    },{rootMargin:'-45% 0px -45% 0px'});
+    steps.forEach(function(s){ io3.observe(s); });
+  }
+
+  /* ---- year explorer ---- */
+  var rail = document.querySelector('.yx-rail');
+  if(!rail) return;
+
+  var YEARS = {
+    '2':{ks:'Key Stage 1',t:'Year 2',
+      d:'The KS1 SATs have been non statutory since 2023, so whether your child sits them is up to their school. Either way this is the year the foundations get set.',
+      c:['Phonics and reading fluency','Sentence structure','Place value','Addition and subtraction','Times tables'],
+      e:'KS1 SATs',w:'Optional',ft:'Foundations year',
+      fs:'Reading and number confidence before KS2 begins.'},
+    '3':{ks:'Key Stage 2',t:'Year 3',
+      d:'The step up from infants. The work gets longer and more independent, and gaps that open here tend to stay open without help.',
+      c:['Reading comprehension','Written calculation','Fractions','Grammar and punctuation','Spelling'],
+      e:'Nothing yet',w:'Groundwork',ft:'Catch it early',
+      fs:'The cheapest gap to close is the one you close in Year 3.'},
+    '4':{ks:'Key Stage 2',t:'Year 4',
+      d:'Where 11+ preparation starts if you are considering it. Two years out is the comfortable runway, not the panicked one.',
+      c:['Times tables to 12','Reasoning and problem solving','Inference in reading','Vocabulary building','Verbal reasoning'],
+      e:'11+ prep begins',w:'Two years out',ft:'11+ starts here',
+      fs:'GL Assessment and CSSE are the two we prepare for.'},
+    '5':{ks:'Key Stage 2',t:'Year 5',
+      d:'The year that matters most for the 11+. The exam is sat in September of Year 6, which means the real preparation window closes at the end of Year 5.',
+      c:['Verbal reasoning','Non verbal reasoning','Comprehension under timing','Advanced arithmetic','Exam technique'],
+      e:'11+',w:'Next September',ft:'The decisive year',
+      fs:'Year 6 is too late to start. This is the window.'},
+    '6':{ks:'Key Stage 2',t:'Year 6',
+      d:'Two things land this year. The 11+ is sat in the middle of September, right at the start of term, and the KS2 SATs follow in May.',
+      c:['11+ final practice','SATs arithmetic','SATs reasoning','Reading paper technique','SPaG'],
+      e:'11+, then SATs',w:'Sept, then May',ft:'Two exams, one year',
+      fs:'The 11+ is sat before most of Year 6 has been taught.'},
+    '7':{ks:'Key Stage 3',t:'Years 7 to 9',
+      d:'The quiet years with no external exam, which is exactly why they get neglected. What happens here decides which GCSE tier your child ends up on.',
+      c:['Algebra foundations','Geometry','Literary analysis','Extended writing','Science fundamentals'],
+      e:'Setting for GCSE',w:'Decided in Year 9',ft:'Nothing to show, everything at stake',
+      fs:'Tier decisions get made on Key Stage 3 performance.'},
+    '10':{ks:'Key Stage 4',t:'Years 10 and 11',
+      d:'Year 10 covers most of the content and Year 11 turns it into marks. We work across AQA, Edexcel and OCR for Maths, English and Science.',
+      c:['Past paper technique','Higher tier topics','Set text analysis','Required practicals','Mark scheme strategy'],
+      e:'GCSEs',w:'May and June',ft:'Content, then technique',
+      fs:'Knowing it and being able to show it are different skills.'}
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function paintYear(y){
+    var d = YEARS[y]; if(!d) return;
+    $('yx-kick').textContent  = d.ks;
+    $('yx-title').textContent = d.t;
+    $('yx-desc').textContent  = d.d;
+    $('yx-exam').textContent  = d.e;
+    $('yx-when').textContent  = d.w;
+    $('yx-cost').textContent  = '£20';
+    $('yx-ft').textContent    = d.ft;
+    $('yx-fs').textContent    = d.fs;
+    var cov = $('yx-cov'); cov.innerHTML = '';
+    d.c.forEach(function(c){
+      var s = document.createElement('span'); s.textContent = c; cov.appendChild(s);
+    });
+    var left = document.querySelector('.yx-left');
+    left.classList.remove('yxfade'); void left.offsetWidth; left.classList.add('yxfade');
+  }
+
+  rail.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    rail.querySelectorAll('button').forEach(function(x){
+      x.setAttribute('aria-selected','false');
+    });
+    b.setAttribute('aria-selected','true');
+    paintYear(b.dataset.y);
+  });
+  rail.addEventListener('keydown', function(e){
+    if(e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
+    var bs = [].slice.call(rail.querySelectorAll('button'));
+    var i = bs.indexOf(document.activeElement); if(i<0) return;
+    var n = (i + (e.key==='ArrowRight'?1:-1) + bs.length) % bs.length;
+    bs[n].focus(); bs[n].click(); e.preventDefault();
+  });
+  paintYear('2');
+})();
