@@ -619,8 +619,8 @@ nav.menu-open{z-index:200}
   min-height:440px;display:flex;flex-direction:column;
   transform:scale(0.86);opacity:0.5;
   transform-origin:center center;
-  transition:transform .5s var(--ease-o),opacity .5s var(--ease-o),
-             box-shadow .5s var(--ease-o)}
+  transition:transform .3s var(--ease-o),opacity .3s var(--ease-o),
+             box-shadow .3s var(--ease-o)}
 .reviews-scroller .testimonial p{flex:1}
 .reviews-scroller .testimonial.is-focus{
   transform:scale(1);opacity:1;
@@ -632,8 +632,32 @@ nav.menu-open{z-index:200}
    leaving the whole rail shrunken and faded */
 .reviews-scroller.no-focus .testimonial{transform:none;opacity:1}
 
+/* Preferred path: tie the scale straight to scroll position so it tracks the
+   finger with no lag. An observer cannot do this, because its callback fires
+   on a separate task after layout, so during a quick flick the card crosses
+   the centre band before the callback lands and the zoom arrives late.
+   view(inline) is driven by the compositor instead, and 50% of the range is
+   exactly the moment the card is centred in the rail. Only transform and
+   opacity animate, so nothing repaints per frame. */
+@supports (animation-timeline:view()){
+  /* Only the animation properties. The scaled-down base above is deliberately
+     left in place, because a view timeline reports no time at all while it is
+     inactive, and the animation then produces nothing. Flattening the base
+     here would leave every card the same size with no fallback. A running
+     animation outranks the class rules, so when this is live it simply
+     wins. */
+  .reviews-scroller .testimonial{
+    animation:rail-focal linear both;
+    animation-timeline:view(inline)}
+  @keyframes rail-focal{
+    0%,100%{transform:scale(0.86);opacity:0.5}
+    50%{transform:scale(1);opacity:1}
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
-  .reviews-scroller .testimonial{transform:none!important;opacity:1!important}
+  .reviews-scroller .testimonial{transform:none!important;opacity:1!important;
+    animation:none!important}
 }
 @media(max-width:700px){
   .reviews-scroller{-webkit-mask-image:linear-gradient(90deg,#000 0,

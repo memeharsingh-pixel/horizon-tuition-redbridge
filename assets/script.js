@@ -524,6 +524,12 @@ document.addEventListener('DOMContentLoaded', function(){
   var cards = [].slice.call(rail.querySelectorAll('.testimonial'));
   if(!cards.length) return;
 
+  // No early return for scroll-driven CSS. Support for animation-timeline is
+  // not the same as the timeline being active: a view timeline reports no
+  // time while it is inactive, and the animation then does nothing at all.
+  // Standing down on CSS.supports alone would have left no focal effect
+  // whatsoever in that case. A live animation outranks these classes anyway,
+  // so where the CSS works it wins and this is merely redundant.
   var reduce = window.matchMedia &&
                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Without an observer the cards would stay shrunk and faded, so opt the
@@ -538,11 +544,22 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ if(e.isIntersecting) focus(e.target); });
+    // A wider band means several cards can qualify at once, so pick whichever
+    // sits nearest the middle rather than letting the last entry win.
+    var hits = entries.filter(function(e){ return e.isIntersecting; });
+    if(!hits.length) return;
+    var mid = rail.getBoundingClientRect().left + rail.clientWidth / 2;
+    var best = null, bestDist = Infinity;
+    cards.forEach(function(c){
+      var b = c.getBoundingClientRect();
+      var d = Math.abs((b.left + b.width / 2) - mid);
+      if(d < bestDist){ bestDist = d; best = c; }
+    });
+    if(best) focus(best);
   }, {
     root: rail,
-    // a thin strip down the centre of the rail
-    rootMargin: '0px -48% 0px -48%',
+    // wider than a hairline, so a quick flick cannot skip straight past it
+    rootMargin: '0px -40% 0px -40%',
     threshold: 0
   });
   cards.forEach(function(c){ io.observe(c); });
