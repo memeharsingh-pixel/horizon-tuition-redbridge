@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /email-sequences/
 
 Sitemap: https://horizontuitionredbridge.co.uk/sitemap.xml
