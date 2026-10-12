@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/style.css?v=2654c57246"/>
+<link rel="stylesheet" href="/assets/style.css?v=549b04e222"/>
 <script>try{var b=localStorage.getItem("htr-bar"),t=b==="off"?0:+b;if(t&&Date.now()-t<2592e6)document.documentElement.classList.add("no-phone-bar");else if(b)localStorage.removeItem("htr-bar");}catch(e){}</script>
 <script>/* arm the hero card before first paint so it never flickers; the rescue settles it even if script.js never runs */try{if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){var d=document.documentElement;d.classList.add("hero-armed");setTimeout(function(){d.classList.remove("hero-armed")},4500)}}catch(e){}</script>
 </head>
@@ -238,6 +238,21 @@
       <div class="yx-flag"><b id="yx-ft"></b><span id="yx-fs"></span></div>
     </div>
   </div>
+  <div class="yq" id="yq">
+    <div class="yq-ask">
+      <span class="yq-tag">Try a question</span>
+      <span class="yq-subj" id="yq-subj">Year 2, Maths</span>
+      <p class="yq-q" id="yq-q">Sam has 14 stickers and gives 6 to his sister. How many does he have left?</p>
+      <div class="yq-opts" id="yq-opts" role="group" aria-label="Choose an answer"></div>
+      <p class="yq-result" id="yq-result" aria-live="polite"></p>
+    </div>
+    <div class="yq-how">
+      <h3 class="yq-how-h">How we would teach it</h3>
+      <p class="yq-how-p" id="yq-how-p">A question at this level. Pick an answer, then see the method step by step.</p>
+      <button class="yq-how-btn" id="yq-how-btn" type="button">Show me how</button>
+      <ol class="yq-steps" id="yq-steps" hidden></ol>
+    </div>
+  </div>
 </div></section>
 
 <!-- PROGRAMMES -->
@@ -319,7 +334,7 @@
   </div>
 </footer>
 
-<script src="/assets/script.js?v=f0034129db"></script>
+<script src="/assets/script.js?v=2bd0e28e61"></script>
 <a class="float-contact" href="/contact/" aria-label="Contact us"><span>💬</span><span class="float-contact-txt">Contact</span></a>
 </body>
 </html>

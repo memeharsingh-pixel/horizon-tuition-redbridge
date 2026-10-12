@@ -1196,3 +1196,72 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .oc,.oc-stamp,.oc-grade{transition:none;animation:none}
   .oc-grade::before,.oc-grade::after{animation:none;opacity:0}
 }
+
+/* ===== year explorer: try a question, on the same marked exercise book
+   page as the hero card. Marks and steps move by transform only; whether
+   an answer is right is carried by the result text and the border colour,
+   never by the animated mark alone. ===== */
+.yq{position:relative;margin-top:1.25rem;border:1px solid var(--grey-200);
+  border-radius:var(--radius);background-color:#fffdf7;
+  /* fainter rules than the hero card: this block is mostly small text, and
+     at 9% the lines crossing it read like strikethrough */
+  background-image:repeating-linear-gradient(to bottom,transparent 0 27px,
+    rgba(26,79,160,0.055) 27px 28px);background-position:0 10px;
+  padding:1.6rem 1.75rem 1.6rem 3.4rem;display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1.25rem 2.75rem}
+.yq::before{content:"";position:absolute;top:0;bottom:0;left:2.25rem;width:6px;
+  border-left:2px solid rgba(179,70,44,0.5);border-right:1px solid rgba(179,70,44,0.3)}
+.yq-tag{display:inline-block;color:var(--rule-red);border:2px solid var(--rule-red);
+  border-radius:5px;font-size:0.68rem;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;padding:0.15rem 0.55rem;transform:rotate(-3deg);
+  margin-bottom:0.65rem;background:rgba(255,253,247,0.9)}
+.yq-subj{display:block;font-size:0.8rem;font-weight:600;color:var(--ink-muted);
+  margin-bottom:0.35rem}
+.yq-q{font-family:var(--ff-head);color:var(--navy);font-size:1.3rem;line-height:1.3;
+  margin-bottom:1rem;font-weight:600}
+.yq-opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.6rem}
+.yq-opt{position:relative;font:600 1rem var(--ff-body);color:var(--navy);background:#fff;
+  border:1.5px solid var(--grey-200);border-radius:var(--radius-sm);padding:0.75rem 0.4rem;
+  cursor:pointer;transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
+.yq-opt:hover:not([disabled]){border-color:var(--navy);transform:translateY(-2px)}
+.yq-opt:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.yq-opt[disabled]{cursor:default}
+.yq-opt.is-right{border-color:#246b3b;background:#eef7f0;color:#1d5a31}
+.yq-opt.is-wrong{border-color:var(--rule-red);background:#fbefec}
+.yq-opt.is-dim{color:var(--ink-muted)}
+.yq-mark{position:absolute;top:-11px;right:-9px;width:28px;height:28px;overflow:visible;
+  --r:-8deg;transform:rotate(var(--r));pointer-events:none;
+  animation:oc-slam .32s both}
+.yq-mark path{fill:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.is-right .yq-mark path{stroke:#2f8f4e}
+.is-wrong .yq-mark path{stroke:var(--rule-red)}
+.yq-result{min-height:1.5em;margin-top:0.85rem;font-weight:700;font-size:0.92rem}
+.yq-result.ok{color:#246b3b}
+.yq-result.no{color:var(--rule-red)}
+.yq-how-h{font-family:var(--ff-head);color:var(--navy);font-size:1.05rem;margin:0.2rem 0 0.35rem}
+.yq-how-p{color:var(--ink-muted);font-size:0.88rem;line-height:1.6;margin-bottom:0.85rem}
+.yq-how-btn{font:700 0.9rem var(--ff-body);background:var(--navy);color:#fff;border:0;
+  border-radius:var(--radius-sm);padding:0.7rem 1.1rem;cursor:pointer;
+  transition:transform .2s ease,background-color .2s ease}
+.yq-how-btn:hover{background:var(--blue);transform:translateY(-2px)}
+.yq-how-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.yq-steps{list-style:none;counter-reset:yq;display:grid;gap:0.6rem}
+.yq-steps li{counter-increment:yq;display:grid;grid-template-columns:26px 1fr;gap:0.6rem;
+  align-items:start;color:var(--grey-800);font-size:0.92rem;line-height:1.55;
+  animation:yq-step .4s var(--ease-o) both}
+.yq-steps li::before{content:counter(yq);display:flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border:1.5px solid var(--rule-red);border-radius:50%;
+  color:var(--rule-red);font:700 0.78rem var(--ff-body);margin-top:1px}
+.yq-steps li:nth-child(2){animation-delay:.12s}
+.yq-steps li:nth-child(3){animation-delay:.24s}
+.yq-steps li:nth-child(4){animation-delay:.36s}
+@keyframes yq-step{from{transform:translateY(10px)}to{transform:none}}
+@media(max-width:760px){
+  .yq{grid-template-columns:1fr;padding:1.3rem 1.1rem 1.3rem 2.75rem;gap:1.1rem}
+  .yq::before{left:1.75rem}
+  .yq-opts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .yq-q{font-size:1.18rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .yq-mark,.yq-steps li{animation:none}
+}

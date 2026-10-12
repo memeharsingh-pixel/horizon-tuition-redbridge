@@ -743,6 +743,109 @@ function hidePhoneBar(){
     });
     var left = document.querySelector('.yx-left');
     left.classList.remove('yxfade'); void left.offsetWidth; left.classList.add('yxfade');
+    paintQ(y);
+  }
+
+  /* one question per year group, written by us at that level. Not taken
+     from any real paper, and the page says so. a is the index of the
+     right answer in o. */
+  var QS = {
+    '2':{s:'Year 2, Maths',
+      q:'Sam has 14 stickers and gives 6 to his sister. How many does he have left?',
+      o:['6','7','8','20'],a:2,
+      st:['Start at 14.','Take away 4 first, to land on 10.',
+          'Take away the other 2: 10 subtract 2 is 8.','Sam has 8 stickers left.']},
+    '3':{s:'Year 3, Maths',q:'What is \u00be of 12?',o:['3','4','8','9'],a:3,
+      st:['The bottom number, 4, says split 12 into 4 equal groups.',
+          '12 shared into 4 groups is 3 in each.',
+          'The top number, 3, says take 3 of those groups.','3 groups of 3 is 9.']},
+    '4':{s:'Year 4, 11+ verbal reasoning',
+      q:'Which word is closest in meaning to RAPID?',
+      o:['slow','quick','steady','loud'],a:1,
+      st:['Rapid describes speed, so look for another speed word.',
+          'Slow is the opposite, which is a common trap.',
+          'Steady and loud are not about how fast something is.',
+          'Quick means the same as rapid.']},
+    '5':{s:'Year 5, 11+ number series',
+      q:'What number comes next? 3, 5, 9, 17, 33, ?',
+      o:['49','57','65','66'],a:2,
+      st:['Write the gaps between the numbers: +2, +4, +8, +16.',
+          'Each gap is double the one before.','So the next gap is +32.',
+          '33 + 32 = 65.']},
+    '6':{s:'Year 6, KS2 SATs arithmetic',q:'Work out 0.6 \u00d7 7',
+      o:['0.42','4.2','42','13'],a:1,
+      st:['Ignore the decimal point for a moment: 6 \u00d7 7 = 42.',
+          '0.6 is ten times smaller than 6.',
+          'So the answer is ten times smaller than 42.','42 \u00f7 10 = 4.2.']},
+    '7':{s:'Years 7 to 9, Maths',q:'Solve 3x + 5 = 20',
+      o:['x = 3','x = 5','x = 15','x = 25'],a:1,
+      st:['Undo the + 5 first: subtract 5 from both sides, so 3x = 15.',
+          '3x means 3 lots of x, so divide both sides by 3.','x = 5.',
+          'Check it: 3 \u00d7 5 + 5 = 20.']},
+    '10':{s:'Years 10 and 11, GCSE Physics',
+      q:'A cyclist travels 150 m in 6 s. What is the average speed?',
+      o:['9 m/s','25 m/s','144 m/s','900 m/s'],a:1,
+      st:['Use the equation: speed = distance \u00f7 time.',
+          'Put in the numbers: 150 \u00f7 6.','150 \u00f7 6 = 25.',
+          'Metres and seconds give metres per second, so 25 m/s.']}
+  };
+  var curQ = null, answered = false;
+  var MARK = {tick:'M22 54 L42 76 L80 24', cross:'M30 30 L70 70 M70 30 L30 70'};
+
+  function addMark(btn, kind){
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns,'svg');
+    svg.setAttribute('class','yq-mark'); svg.setAttribute('viewBox','0 0 100 100');
+    svg.setAttribute('aria-hidden','true');
+    var p = document.createElementNS(ns,'path'); p.setAttribute('d', MARK[kind]);
+    svg.appendChild(p); btn.appendChild(svg);
+  }
+  function paintQ(y){
+    var q = QS[y], box = $('yq-opts'); if(!q || !box) return;
+    curQ = q; answered = false;
+    $('yq-subj').textContent = q.s;
+    $('yq-q').textContent = q.q;
+    $('yq-result').textContent = ''; $('yq-result').className = 'yq-result';
+    $('yq-how-p').textContent = 'A question at this level. Pick an answer, then see the method step by step.';
+    $('yq-how-btn').hidden = false;
+    var st = $('yq-steps'); st.innerHTML = ''; st.hidden = true;
+    box.innerHTML = '';
+    q.o.forEach(function(o,i){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'yq-opt'; b.textContent = o; b.dataset.i = i;
+      box.appendChild(b);
+    });
+  }
+  function markQ(chosen){
+    if(answered || !curQ) return; answered = true;
+    [].slice.call($('yq-opts').children).forEach(function(b,i){
+      b.disabled = true;
+      if(i === curQ.a){ b.classList.add('is-right'); addMark(b,'tick'); }
+      else if(i === chosen){ b.classList.add('is-wrong'); addMark(b,'cross'); }
+      else b.classList.add('is-dim');
+    });
+    var r = $('yq-result');
+    if(chosen === curQ.a){ r.textContent = 'Correct, well done.'; r.className = 'yq-result ok'; }
+    else if(chosen < 0){ r.textContent = 'The answer is ' + curQ.o[curQ.a] + '.'; r.className = 'yq-result ok'; }
+    else { r.textContent = 'Not quite. The answer is ' + curQ.o[curQ.a] + '.'; r.className = 'yq-result no'; }
+  }
+  function showHow(){
+    if(!curQ) return;
+    markQ(-1);
+    var st = $('yq-steps'); st.innerHTML = '';
+    curQ.st.forEach(function(s){
+      var li = document.createElement('li'); li.textContent = s; st.appendChild(li);
+    });
+    st.hidden = false;
+    $('yq-how-btn').hidden = true;
+    $('yq-how-p').textContent = 'This is how it is taught in the session, one step at a time.';
+  }
+  if($('yq-opts')){
+    $('yq-opts').addEventListener('click', function(e){
+      var b = e.target.closest('.yq-opt'); if(!b || b.disabled) return;
+      markQ(+b.dataset.i);
+    });
+    $('yq-how-btn').addEventListener('click', showHow);
   }
 
   rail.addEventListener('click', function(e){
