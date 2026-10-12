@@ -847,14 +847,26 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
 .nhero{position:relative;min-height:min(72vh,620px);display:flex;align-items:flex-end;
   overflow:hidden}
 .nhero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
-/* blurred so the room reads as a backdrop and no child's face is
-   identifiable. scaled up because blur fades out at the edges and would
-   otherwise show a soft border against the scrim. */
+/* The blur and the navy duotone are baked into hero-bg.jpg, a 480px file,
+   so nothing identifiable is ever downloaded. A CSS blur on the full photo
+   still shipped the sharp original to anyone who opened the image. No filter
+   here: upscaling an already blurred image is smooth on its own. */
 .nhero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 40%;
-  display:block;filter:blur(7px);transform:scale(1.08)}
+  display:block}
 .nhero-scrim{position:absolute;inset:0;z-index:1;
   background:linear-gradient(98deg,rgba(9,26,52,0.95) 0%,rgba(9,26,52,0.82) 40%,
     rgba(9,26,52,0.26) 74%,rgba(9,26,52,0.08) 100%)}
+/* Exercise book page drawn over the scrim, so the rules read evenly across
+   the dark and light sides. Lines every 28px, as in --paper-lines. --hm puts
+   the red margin 28px left of where the headline starts: the container's
+   left edge plus its padding. Static decoration, nothing animates. */
+.nhero-scrim::after{content:"";position:absolute;inset:0;pointer-events:none;
+  --hm:calc(max(0px,(100% - 1200px) / 2) + 2rem - 28px);
+  background:
+    linear-gradient(90deg,transparent var(--hm),rgba(179,70,44,0.6) var(--hm),
+      rgba(179,70,44,0.6) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
+    repeating-linear-gradient(to bottom,transparent 0 27px,
+      rgba(255,255,255,0.06) 27px 28px)}
 .nhero-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;
   padding:0 2rem 3.25rem}
 .nhero h1{font-size:clamp(1.75rem,4.5vw,3.1rem);color:#fff;font-weight:600;
@@ -1016,6 +1028,8 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
      headline over the bright part of the photo on a narrow screen */
   .nhero-scrim{background:linear-gradient(to top,rgba(9,26,52,0.95) 34%,
     rgba(9,26,52,0.74) 64%,rgba(9,26,52,0.42) 100%)}
+  /* padding drops to 1.25rem here, so the margin sits 12px before the text */
+  .nhero-scrim::after{--hm:calc(1.25rem - 12px)}
   .nstats,.nmarks{padding-left:1.25rem;padding-right:1.25rem}
   .nstats-in,.nmarks-in{grid-template-columns:1fr;gap:1.1rem}
   .pin{grid-template-columns:1fr;gap:0}
