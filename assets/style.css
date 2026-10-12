@@ -1058,13 +1058,34 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .oc-stamp{display:inline-block;color:var(--rule-red);border:2px solid var(--rule-red);
   border-radius:5px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;
   text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(255,253,247,0.9);
-  transform:rotate(-5deg);margin-top:0.35rem;transition:transform .45s var(--ease-back)}
+  --r:-5deg;transform:rotate(var(--r));margin-top:0.35rem}
 /* green pen, the usual well-done marking colour. #246b3b is the science
    ink already in this file and reaches 6.37:1 on the paper; the brighter
    green is only on the underline strokes, which are decoration. */
-.oc-grade{display:inline-block;color:#246b3b;text-align:center;line-height:1;
-  transform:rotate(-7deg);margin:-0.15rem -0.35rem 0 0;
-  transition:transform .5s var(--ease-back)}
+.oc-grade{position:relative;isolation:isolate;display:inline-block;color:#246b3b;
+  text-align:center;line-height:1;--r:-7deg;transform:rotate(var(--r));
+  margin:-0.15rem -0.35rem 0 0}
+/* the dust kicked up when the mark lands. Decoration only, so it may fade:
+   its resting state is invisible and nothing readable depends on it. */
+/* a mid warm grey, so the dust reads on the cream page and over the navy */
+.oc-grade::before,.oc-grade::after{content:"";position:absolute;left:50%;top:50%;
+  width:210%;height:200%;z-index:-1;pointer-events:none;opacity:0;filter:blur(2px);
+  transform:translate(-50%,-50%) scale(.45)}
+.oc-grade::before{background:
+  radial-gradient(circle at 8% 58%,rgba(140,134,124,0.55) 0 11px,transparent 20px),
+  radial-gradient(circle at 24% 86%,rgba(140,134,124,0.50) 0 10px,transparent 18px),
+  radial-gradient(circle at 50% 96%,rgba(140,134,124,0.45) 0 13px,transparent 22px),
+  radial-gradient(circle at 76% 88%,rgba(140,134,124,0.50) 0 11px,transparent 20px),
+  radial-gradient(circle at 93% 56%,rgba(140,134,124,0.55) 0 10px,transparent 18px),
+  radial-gradient(circle at 30% 20%,rgba(140,134,124,0.35) 0 8px,transparent 15px),
+  radial-gradient(circle at 70% 16%,rgba(140,134,124,0.35) 0 8px,transparent 15px)}
+.oc-grade::after{background:
+  radial-gradient(circle at 2% 80%,rgba(140,134,124,0.45) 0 9px,transparent 17px),
+  radial-gradient(circle at 16% 36%,rgba(140,134,124,0.40) 0 8px,transparent 15px),
+  radial-gradient(circle at 98% 80%,rgba(140,134,124,0.45) 0 9px,transparent 17px),
+  radial-gradient(circle at 86% 30%,rgba(140,134,124,0.40) 0 8px,transparent 15px),
+  radial-gradient(circle at 40% 100%,rgba(140,134,124,0.40) 0 10px,transparent 18px),
+  radial-gradient(circle at 62% 102%,rgba(140,134,124,0.40) 0 9px,transparent 17px)}
 .oc-grade b{font-family:var(--ff-head);font-weight:700;font-size:2rem;letter-spacing:-0.02em}
 .oc-grade em{font-family:var(--ff-head);font-style:normal;font-weight:700;font-size:1.05rem;
   margin-left:0.18rem}
@@ -1101,24 +1122,61 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .oc-btn:active{transform:scale(0.98)}
 .oc-note{font-size:0.76rem;color:var(--ink-muted);text-align:center;margin-top:0.65rem}
 
-/* start state, only while armed and before script.js adds .in */
+/* start state, only while armed and before script.js adds .in. The stamp
+   and the mark wait at zero size, not enlarged: an enlarged mark sitting
+   over the card while it waited its turn read as a layout bug. */
 .hero-armed .nhero:not(.in) .oc{transform:rotate(-4deg) translate(26px,34px)}
-.hero-armed .nhero:not(.in) .oc-stamp{transform:rotate(-16deg) scale(1.7)}
+.hero-armed .nhero:not(.in) .oc-stamp,
+.hero-armed .nhero:not(.in) .oc-grade{transform:rotate(var(--r)) scale(0)}
 .hero-armed .nhero:not(.in) .oc-free{background-size:0% 100%}
 .hero-armed .nhero:not(.in) .oc-tick path{stroke-dashoffset:95}
-.hero-armed .nhero:not(.in) .oc-grade{transform:rotate(-20deg) scale(2.3)}
 .hero-armed .nhero:not(.in) .oc-grade path{stroke-dashoffset:130}
-/* the running order. Scoped to the armed window so the delays drop away
-   afterwards and hover stays immediate. */
-.hero-armed .nhero.in .oc{transition-delay:.25s}
-.hero-armed .nhero.in .oc-stamp{transition-delay:.8s}
-.hero-armed .nhero.in .oc-free{transition-delay:1.05s}
-.hero-armed .nhero.in .oc-facts li:nth-child(1) .oc-tick path{transition-delay:1.25s}
-.hero-armed .nhero.in .oc-facts li:nth-child(2) .oc-tick path{transition-delay:1.42s}
-.hero-armed .nhero.in .oc-facts li:nth-child(3) .oc-tick path{transition-delay:1.59s}
-.hero-armed .nhero.in .oc-grade{transition-delay:1.9s}
-.hero-armed .nhero.in .oc-grade path:nth-child(1){transition-delay:2.3s}
-.hero-armed .nhero.in .oc-grade path:nth-child(2){transition-delay:2.45s}
+
+/* the running order, about two seconds end to end. Scoped to the armed
+   window, so when the head script strips .hero-armed every animation and
+   delay drops away and the card is simply in its finished state. */
+.hero-armed .nhero.in .oc{transition-duration:.7s;transition-delay:.15s;
+  animation:oc-thud .3s ease-out 1.5s}
+.hero-armed .nhero.in .oc-stamp{animation:oc-slam .34s .5s both}
+.hero-armed .nhero.in .oc-free{transition-duration:.6s;transition-delay:.7s}
+.hero-armed .nhero.in .oc-tick path{transition-duration:.42s}
+.hero-armed .nhero.in .oc-facts li:nth-child(1) .oc-tick path{transition-delay:.85s}
+.hero-armed .nhero.in .oc-facts li:nth-child(2) .oc-tick path{transition-delay:.97s}
+.hero-armed .nhero.in .oc-facts li:nth-child(3) .oc-tick path{transition-delay:1.09s}
+.hero-armed .nhero.in .oc-grade{animation:oc-slam .4s 1.28s both}
+.hero-armed .nhero.in .oc-grade::before{animation:oc-puff .6s ease-out 1.5s both}
+.hero-armed .nhero.in .oc-grade::after{animation:oc-puff-wide .75s ease-out 1.53s both}
+.hero-armed .nhero.in .oc-grade path{transition-duration:.22s}
+.hero-armed .nhero.in .oc-grade path:nth-child(1){transition-delay:1.66s}
+.hero-armed .nhero.in .oc-grade path:nth-child(2){transition-delay:1.76s}
+
+/* A slam: hidden at zero until its moment, then it appears just above the
+   page and accelerates down into it (ease-in), squashes on impact and
+   settles. Ease-in on the fall is what makes it land rather than float. */
+@keyframes oc-slam{
+  0%{transform:rotate(var(--r)) scale(0)}
+  1%{transform:rotate(calc(var(--r) - 9deg)) scale(1.5);
+     animation-timing-function:cubic-bezier(.55,0,1,.45)}
+  55%{transform:rotate(var(--r)) scale(0.9);
+      animation-timing-function:cubic-bezier(.22,1,.36,1)}
+  78%{transform:rotate(var(--r)) scale(1.04)}
+  100%{transform:rotate(var(--r)) scale(1)}
+}
+@keyframes oc-puff{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}
+  14%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}
+}
+@keyframes oc-puff-wide{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(0deg)}
+  18%{opacity:.9}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.6) rotate(8deg)}
+}
+/* the page takes the weight of the mark */
+@keyframes oc-thud{
+  0%,100%{transform:rotate(-1deg)}
+  35%{transform:rotate(-1deg) translateY(3px) scale(0.997)}
+}
 
 @media(max-width:900px){
   .nhero{align-items:flex-end}
@@ -1135,5 +1193,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .oc-grade b{font-size:1.7rem}
 }
 @media(prefers-reduced-motion:reduce){
-  .oc,.oc-stamp,.oc-grade{transition:none}
+  .oc,.oc-stamp,.oc-grade{transition:none;animation:none}
+  .oc-grade::before,.oc-grade::after{animation:none;opacity:0}
 }
