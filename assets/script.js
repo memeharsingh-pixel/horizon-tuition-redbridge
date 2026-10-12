@@ -11,10 +11,34 @@ function toggleFAQ(el){
   var arrow=el.querySelector('.faq-arrow');
   var isOpen=ans.classList.contains('open');
   var list=el.closest('.faq-list');
-  list.querySelectorAll('.faq-a').forEach(function(a){a.classList.remove('open');});
+  list.querySelectorAll('.faq-a').forEach(function(a){
+    a.classList.remove('open'); a.style.maxHeight='';
+  });
   list.querySelectorAll('.faq-arrow').forEach(function(a){a.classList.remove('open');});
-  if(!isOpen){ans.classList.add('open');if(arrow)arrow.classList.add('open');}
+  /* open to the answer's real height. A fixed max-height made closing
+     sit still while it shrank through space the answer never used.
+     Measured in the open state with transitions off: the padding also
+     animates in, so measuring mid-transition came out 28px short and
+     clipped the last line. */
+  if(!isOpen){
+    ans.style.transition='none';
+    ans.classList.add('open'); ans.style.maxHeight='none';
+    var full=ans.scrollHeight;
+    ans.classList.remove('open'); ans.style.maxHeight='';
+    void ans.offsetHeight;
+    ans.style.transition='';
+    ans.classList.add('open');
+    ans.style.maxHeight=full+'px';
+    if(arrow)arrow.classList.add('open');
+  }
 }
+/* text reflows on resize or rotation, so an open answer can outgrow the
+   height it was opened to */
+window.addEventListener('resize', function(){
+  document.querySelectorAll('.faq-a.open').forEach(function(a){
+    a.style.maxHeight = a.scrollHeight + 'px';
+  });
+});
 function toggleEmail(el){
   var body=el.nextElementSibling;
   var arrow=el.querySelector('.toggle-arrow');
@@ -190,15 +214,18 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       // line. Short pages would otherwise strand their last rows invisible.
       var maxScroll = Math.max(0, doc.scrollHeight - h);
       var atEnd = (window.pageYOffset || doc.scrollTop || 0) >= maxScroll - 2;
+      // measure first, then write. Reading a rect straight after adding a
+      // class forces a fresh layout for every element in the batch.
       var cut = 0;
-      for(var i = 0; i < els.length; i++){
-        if(atEnd || els[i].getBoundingClientRect().top < line){
-          // stagger within this batch, not by position in the page: otherwise
-          // anything revealed later on scroll starts on a long fixed delay
-          els[i].style.transitionDelay = Math.min(i, 5) * 90 + 'ms';
-          els[i].classList.add('is-in');
-          cut = i + 1;                          // reveal once, then stop watching
-        } else break;                           // document order: the rest are lower
+      while(cut < els.length &&
+            (atEnd || els[cut].getBoundingClientRect().top < line)) cut++;
+      for(var i = 0; i < cut; i++){
+        // stagger within this batch, not by position in the page: otherwise
+        // anything revealed later on scroll starts on a long fixed delay
+        var d = Math.min(i, 5) * 90;
+        els[i].style.transitionDelay = d + 'ms';
+        els[i].classList.add('is-in');
+        settle(els[i], d);
       }
       if(cut) els.splice(0, cut);
       if(!els.length){
@@ -210,6 +237,15 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       if(pending) return;
       pending = true;
       window.requestAnimationFrame(sweep);
+    }
+    // once an element has finished revealing, drop the reveal classes so its
+    // own hover transitions apply again instead of the slow reveal timing
+    function settle(el, d){
+      if(el._settle) return;
+      el._settle = setTimeout(function(){
+        el.classList.remove('reveal', 'is-in');
+        el.style.transitionDelay = '';
+      }, d + 900);
     }
     window.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', onScroll);
@@ -230,6 +266,7 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
         entries.forEach(function(e){
           if(!e.isIntersecting) return;
           e.target.classList.add('is-in');
+          settle(e.target, 0);
           io.unobserve(e.target);
         });
       }, {rootMargin:'0px 0px -12% 0px'});   // matches the sweep's 0.88 line
