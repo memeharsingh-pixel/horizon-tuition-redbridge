@@ -844,8 +844,8 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
 }
 
 /* ---- hero ---- */
-.nhero{position:relative;min-height:min(72vh,620px);display:flex;align-items:flex-end;
-  overflow:hidden}
+.nhero{position:relative;min-height:min(80vh,640px);display:flex;align-items:center;
+  overflow:hidden;--ease-back:cubic-bezier(.34,1.45,.64,1)}
 .nhero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
 /* The blur and the navy duotone are baked into hero-bg.jpg, a 480px file,
    so nothing identifiable is ever downloaded. A CSS blur on the full photo
@@ -868,8 +868,9 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
     repeating-linear-gradient(to bottom,transparent 0 27px,
       rgba(255,255,255,0.06) 27px 28px)}
 .nhero-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;
-  padding:0 2rem 3.25rem}
-.nhero h1{font-size:clamp(1.75rem,4.5vw,3.1rem);color:#fff;font-weight:600;
+  padding:4.25rem 2rem;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr);
+  gap:3rem;align-items:center}
+.nhero h1{font-size:clamp(1.75rem,3.6vw,2.7rem);color:#fff;font-weight:600;
   max-width:20ch;margin-bottom:1rem;line-height:1.16}
 .ln{display:block;overflow:hidden}
 .ln>i{display:block;font-style:normal;transform:translateY(106%);
@@ -896,22 +897,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .nhero-sub,.nhero-btns{opacity:0;transform:translateY(12px);
   transition:opacity .8s var(--ease-o) .35s,transform .8s var(--ease-o) .35s}
 .nhero.in .nhero-sub,.nhero.in .nhero-btns{opacity:1;transform:none}
-
-/* ---- odometer stat strip ---- */
-.nstats{background:var(--navy);padding:1.9rem 2rem}
-.nstats-in{max-width:1200px;margin:0 auto;display:grid;
-  grid-template-columns:repeat(3,1fr);gap:1.6rem}
-.nstat b{display:flex;align-items:flex-end;font-family:var(--ff-head);
-  font-size:clamp(1.9rem,4vw,2.9rem);color:var(--amber);font-weight:700;
-  line-height:1;letter-spacing:-0.025em}
-.nstat>span{display:block;color:rgba(255,255,255,0.6);font-size:0.85rem;
-  margin-top:0.5rem}
-.odo{display:inline-flex;overflow:hidden;height:1em;line-height:1}
-.odo-d{display:block;height:1em;overflow:hidden}
-.odo-col{display:block;transform:translateY(0);transition:transform 1.15s var(--ease-o)}
-.odo-col s{display:block;height:1em;line-height:1;text-decoration:none;
-  font-variant-numeric:tabular-nums}
-.fixn{font-family:var(--ff-head)}
 
 /* ---- marking pen trust row ---- */
 .nmarks{padding:2.75rem 2rem 0.5rem}
@@ -1030,8 +1015,8 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
     rgba(9,26,52,0.74) 64%,rgba(9,26,52,0.42) 100%)}
   /* padding drops to 1.25rem here, so the margin sits 12px before the text */
   .nhero-scrim::after{--hm:calc(1.25rem - 12px)}
-  .nstats,.nmarks{padding-left:1.25rem;padding-right:1.25rem}
-  .nstats-in,.nmarks-in{grid-template-columns:1fr;gap:1.1rem}
+  .nmarks{padding-left:1.25rem;padding-right:1.25rem}
+  .nmarks-in{grid-template-columns:1fr;gap:1.1rem}
   .pin{grid-template-columns:1fr;gap:0}
   .pin-sticky{position:relative;height:auto;margin-bottom:1.25rem}
   .pin-frame{aspect-ratio:16/10;max-height:none}
@@ -1040,4 +1025,115 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
     border-bottom:1px solid var(--grey-200)}
   .yx-body{grid-template-columns:1fr}
   .yx-right{min-height:200px;order:-1}
+}
+
+/* ===== homepage hero: the offer card, drawn as a marked exercise book page
+   It carries the offer the amber bar and the stats strip used to repeat.
+   Motion: the page slides in, the stamp lands, "free" is highlighted, the
+   ticks are marked in, then a green 100% is written at the top and
+   underlined twice. The finished card is the base state. A head script adds
+   .hero-armed before first paint to set the start, script.js adds .in to
+   play it, and the head script strips .hero-armed after 4.5s whatever
+   happens. Transform, stroke offset and background size only: no text is
+   ever hidden or recoloured by the motion. ===== */
+.nhero-copy{min-width:0}
+.nhero-more{color:#fff;font-weight:600;font-size:0.95rem;
+  border-bottom:2px solid var(--amber);padding-bottom:2px}
+.nhero-more:hover{color:var(--amber)}
+
+.oc{justify-self:end;width:100%;max-width:400px;position:relative;
+  background-color:#fffdf7;border-radius:6px;padding:1.45rem 1.5rem 1.35rem 3.3rem;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 27px,
+    rgba(26,79,160,0.11) 27px 28px);background-position:0 12px;
+  box-shadow:0 30px 60px -24px rgba(9,26,52,0.7),0 1px 0 rgba(255,255,255,0.6) inset;
+  transform:rotate(-1deg);transition:transform .9s var(--ease-o)}
+.oc::before{content:"";position:absolute;top:0;bottom:0;left:2.2rem;width:6px;
+  border-left:2px solid rgba(179,70,44,0.55);border-right:1px solid rgba(179,70,44,0.35)}
+.oc::after{content:"";position:absolute;left:0.75rem;top:1.2rem;bottom:1.2rem;width:10px;
+  background:radial-gradient(circle,rgba(9,26,52,0.18) 4px,transparent 4.5px) 0 0/10px 64px repeat-y}
+.oc:hover{transform:rotate(0deg) translateY(-3px)}
+
+.oc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem;
+  margin-bottom:0.75rem}
+.oc-stamp{display:inline-block;color:var(--rule-red);border:2px solid var(--rule-red);
+  border-radius:5px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(255,253,247,0.9);
+  transform:rotate(-5deg);margin-top:0.35rem;transition:transform .45s var(--ease-back)}
+/* green pen, the usual well-done marking colour. #246b3b is the science
+   ink already in this file and reaches 6.37:1 on the paper; the brighter
+   green is only on the underline strokes, which are decoration. */
+.oc-grade{display:inline-block;color:#246b3b;text-align:center;line-height:1;
+  transform:rotate(-7deg);margin:-0.15rem -0.35rem 0 0;
+  transition:transform .5s var(--ease-back)}
+.oc-grade b{font-family:var(--ff-head);font-weight:700;font-size:2rem;letter-spacing:-0.02em}
+.oc-grade em{font-family:var(--ff-head);font-style:normal;font-weight:700;font-size:1.05rem;
+  margin-left:0.18rem}
+.oc-grade svg{display:block;width:100%;height:10px;margin-top:0.12rem;overflow:visible}
+.oc-grade path{fill:none;stroke:#2f8f4e;stroke-width:2.4;stroke-linecap:round;
+  stroke-dasharray:130;stroke-dashoffset:0;transition:stroke-dashoffset .35s var(--ease-o)}
+.oc-grade small{display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.3px;
+  margin-top:0.3rem}
+
+.oc-h{font-family:var(--ff-head);color:var(--navy);font-size:1.6rem;line-height:1.18;
+  font-weight:700;margin-bottom:1rem}
+.oc-free{white-space:nowrap;padding:0 4px;margin:0 -2px;
+  background:linear-gradient(180deg,transparent 18%,var(--amber) 18%,var(--amber) 90%,transparent 90%)
+    left center/100% 100% no-repeat;transition:background-size .8s var(--ease-o)}
+.oc-facts{list-style:none;display:grid;gap:0.6rem;margin-bottom:1.15rem}
+.oc-facts li{display:flex;gap:0.65rem}
+.oc-tick{width:22px;height:22px;flex-shrink:0;margin-top:1px;overflow:visible}
+.oc-tick path{fill:none;stroke:var(--rule-red);stroke-width:9;stroke-linecap:round;
+  stroke-linejoin:round;stroke-dasharray:95;stroke-dashoffset:0;
+  transition:stroke-dashoffset .55s var(--ease-o)}
+.oc-facts b{display:block;color:var(--navy);font-size:0.95rem;line-height:1.3}
+.oc-facts span{display:block;color:var(--ink-muted);font-size:0.82rem;line-height:1.45}
+.oc-prices{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.1rem;
+  border-top:1px solid rgba(15,45,90,0.12);padding-top:0.7rem}
+.oc-prices b{display:block;font-family:var(--ff-head);font-size:1.85rem;color:var(--navy);
+  line-height:1;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.oc-prices span{display:block;font-size:0.78rem;color:var(--ink-muted);margin-top:0.3rem}
+.oc-prices em{display:block;font-style:normal;font-weight:700;font-size:0.78rem;
+  color:var(--navy);margin-top:0.1rem}
+.oc-btn{display:block;text-align:center;background:var(--amber);color:var(--navy);
+  font-weight:700;font-size:1rem;padding:0.88rem 1rem;border-radius:var(--radius-sm);
+  box-shadow:0 4px 14px rgba(15,45,90,0.16);transition:transform .2s ease}
+.oc-btn:hover{transform:translateY(-2px)}
+.oc-btn:active{transform:scale(0.98)}
+.oc-note{font-size:0.76rem;color:var(--ink-muted);text-align:center;margin-top:0.65rem}
+
+/* start state, only while armed and before script.js adds .in */
+.hero-armed .nhero:not(.in) .oc{transform:rotate(-4deg) translate(26px,34px)}
+.hero-armed .nhero:not(.in) .oc-stamp{transform:rotate(-16deg) scale(1.7)}
+.hero-armed .nhero:not(.in) .oc-free{background-size:0% 100%}
+.hero-armed .nhero:not(.in) .oc-tick path{stroke-dashoffset:95}
+.hero-armed .nhero:not(.in) .oc-grade{transform:rotate(-20deg) scale(2.3)}
+.hero-armed .nhero:not(.in) .oc-grade path{stroke-dashoffset:130}
+/* the running order. Scoped to the armed window so the delays drop away
+   afterwards and hover stays immediate. */
+.hero-armed .nhero.in .oc{transition-delay:.25s}
+.hero-armed .nhero.in .oc-stamp{transition-delay:.8s}
+.hero-armed .nhero.in .oc-free{transition-delay:1.05s}
+.hero-armed .nhero.in .oc-facts li:nth-child(1) .oc-tick path{transition-delay:1.25s}
+.hero-armed .nhero.in .oc-facts li:nth-child(2) .oc-tick path{transition-delay:1.42s}
+.hero-armed .nhero.in .oc-facts li:nth-child(3) .oc-tick path{transition-delay:1.59s}
+.hero-armed .nhero.in .oc-grade{transition-delay:1.9s}
+.hero-armed .nhero.in .oc-grade path:nth-child(1){transition-delay:2.3s}
+.hero-armed .nhero.in .oc-grade path:nth-child(2){transition-delay:2.45s}
+
+@media(max-width:900px){
+  .nhero{align-items:flex-end}
+  .nhero-in{grid-template-columns:1fr;gap:1.6rem;padding:2.25rem 1.25rem 1.6rem}
+  .oc{justify-self:stretch;max-width:none}
+}
+/* on a phone the facts repeat the line above, and keeping them pushed the
+   button below the first screen */
+@media(max-width:600px){
+  .oc-facts{display:none}
+  .oc{padding:1.2rem 1.1rem 1.15rem 2.9rem}
+  .oc::before{left:1.9rem}
+  .oc-h{font-size:1.38rem}
+  .oc-grade b{font-size:1.7rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .oc,.oc-stamp,.oc-grade{transition:none}
 }

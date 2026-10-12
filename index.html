@@ -28,8 +28,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/style.css?v=ea3b51f957"/>
+<link rel="stylesheet" href="/assets/style.css?v=21a9232eeb"/>
 <script>try{var b=localStorage.getItem("htr-bar"),t=b==="off"?0:+b;if(t&&Date.now()-t<2592e6)document.documentElement.classList.add("no-phone-bar");else if(b)localStorage.removeItem("htr-bar");}catch(e){}</script>
+<script>/* arm the hero card before first paint so it never flickers; the rescue settles it even if script.js never runs */try{if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){var d=document.documentElement;d.classList.add("hero-armed");setTimeout(function(){d.classList.remove("hero-armed")},4500)}}catch(e){}</script>
 </head>
 <body>
 
@@ -105,33 +106,47 @@
   </div>
 </nav>
 
-<div class="offer-bar">🎉 First Two Sessions Are Free <span>New students</span></div>
-
 <!-- HERO -->
 <header class="nhero" id="nhero">
   <div class="nhero-bg"><img src="/assets/images/hero-bg.jpg" alt="" aria-hidden="true" decoding="async"/></div>
   <div class="nhero-scrim"></div>
   <div class="nhero-in">
-    <h1 class="masked">
-      <span class="ln"><i>Building <span class="hl">Confidence</span>,</i></span>
-      <span class="ln"><i>Strengthening Skills and</i></span>
-      <span class="ln"><i>Driving Academic Results</i></span>
-    </h1>
-    <p class="nhero-sub">Small group tuition in Maths, English and Science for ages 6 to 16, in Barkingside.</p>
-    <div class="nhero-btns">
-      <a href="/contact/" class="btn-primary">Book Free Assessment →</a>
-      <a href="#session" class="btn-outline">See how a session works</a>
+    <div class="nhero-copy">
+      <h1 class="masked">
+        <span class="ln"><i>Building <span class="hl">Confidence</span>,</i></span>
+        <span class="ln"><i>Strengthening Skills and</i></span>
+        <span class="ln"><i>Driving Academic Results</i></span>
+      </h1>
+      <p class="nhero-sub">Small group tuition in Maths, English and Science for ages 6 to 16, in Barkingside.</p>
+      <div class="nhero-btns">
+        <a href="#session" class="nhero-more">See how a session works</a>
+      </div>
     </div>
+
+    <aside class="oc" aria-labelledby="oc-h">
+      <div class="oc-top">
+        <span class="oc-stamp">New students</span>
+        <span class="oc-grade">
+          <b>100%</b><em>off</em>
+          <svg viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true"><path d="M3 3 C40 1 80 2 117 4"/><path d="M8 8 C45 6 82 7 112 9"/></svg>
+          <small>first 2 sessions</small>
+        </span>
+      </div>
+      <h2 class="oc-h" id="oc-h">Your first two sessions are <span class="oc-free">free</span></h2>
+      <ul class="oc-facts">
+        <li><svg class="oc-tick" viewBox="0 0 100 100" aria-hidden="true"><path d="M22 54 L42 76 L80 24"/></svg><div><b>Assessed before they start</b><span>Placed at the level they are actually working at</span></div></li>
+        <li><svg class="oc-tick" viewBox="0 0 100 100" aria-hidden="true"><path d="M22 54 L42 76 L80 24"/></svg><div><b>Small groups, ages 6 to 16</b><span>Matched on ability, not just school year</span></div></li>
+        <li><svg class="oc-tick" viewBox="0 0 100 100" aria-hidden="true"><path d="M22 54 L42 76 L80 24"/></svg><div><b>1 hour 45 minutes</b><span>Every session, with homework set and marked</span></div></li>
+      </ul>
+      <div class="oc-prices">
+        <div><b>£20</b><span>one session a week</span></div>
+        <div><b>£35</b><span>two a week</span><em>£17.50 each</em></div>
+      </div>
+      <a href="/contact/" class="oc-btn">Book Free Assessment →</a>
+      <p class="oc-note">Paid monthly in arrears. No joining fee.</p>
+    </aside>
   </div>
 </header>
-
-<div class="nstats">
-  <div class="nstats-in">
-    <div class="nstat"><b><span class="fixn">6 to&nbsp;</span><span class="odo" data-n="16"></span></b><span>The ages we teach</span></div>
-    <div class="nstat"><b><span class="odo" data-n="1"></span><span class="fixn">h&nbsp;</span><span class="odo" data-n="45"></span></b><span>Every session, start to finish</span></div>
-    <div class="nstat"><b><span class="odo" data-n="2"></span></b><span>Free sessions before you decide</span></div>
-  </div>
-</div>
 
 <div class="nmarks" data-anim>
   <div class="nmarks-in">
