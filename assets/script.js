@@ -840,6 +840,11 @@ function hidePhoneBar(){
   function paintQ(y){
     var q = QS[y], box = $('yq-opts'); if(!q || !box) return;
     curQ = q; answered = false;
+    [].slice.call($('yq-years').querySelectorAll('button')).forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.y === y ? 'true' : 'false');
+    });
+    var ask = document.querySelector('.yq-ask');
+    ask.classList.remove('yq-swap'); void ask.offsetWidth; ask.classList.add('yq-swap');
     $('yq-subj').textContent = q.s;
     $('yq-q').textContent = q.q;
     $('yq-result').textContent = ''; $('yq-result').className = 'yq-result';
@@ -883,6 +888,13 @@ function hidePhoneBar(){
       markQ(+b.dataset.i);
     });
     $('yq-how-btn').addEventListener('click', showHow);
+    /* the box's own year chips change only the question. The explorer above
+       is usually off screen by now, and resizing it there makes the page
+       jump in browsers without scroll anchoring. */
+    $('yq-years').addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b) return;
+      paintQ(b.dataset.y);
+    });
   }
 
   rail.addEventListener('click', function(e){

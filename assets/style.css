@@ -1221,6 +1221,18 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   border-radius:5px;font-size:0.68rem;font-weight:700;letter-spacing:1.4px;
   text-transform:uppercase;padding:0.15rem 0.55rem;transform:rotate(-3deg);
   margin-bottom:0.65rem;background:rgba(255,253,247,0.9)}
+.yq-years{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;margin:0 0 0.95rem}
+.yq-years-l{font-size:0.78rem;font-weight:700;color:var(--ink-muted);margin-right:0.15rem}
+.yq-years button{font:600 0.8rem var(--ff-body);color:var(--navy);background:#fff;
+  border:1.5px solid var(--grey-200);border-radius:999px;padding:0.36rem 0.8rem;cursor:pointer;
+  transition:color .2s ease,background-color .2s ease,border-color .2s ease,transform .2s ease}
+.yq-years button:hover{border-color:var(--navy);transform:translateY(-1px)}
+.yq-years button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.yq-years button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+/* the question swaps with a short rise, transform only */
+.yq-swap .yq-subj,.yq-swap .yq-q,.yq-swap .yq-opts{animation:yq-step .4s var(--ease-o) both}
+.yq-swap .yq-q{animation-delay:.04s}
+.yq-swap .yq-opts{animation-delay:.08s}
 .yq-subj{display:block;font-size:0.8rem;font-weight:600;color:var(--ink-muted);
   margin-bottom:0.35rem}
 .yq-q{font-family:var(--ff-head);color:var(--navy);font-size:1.3rem;line-height:1.3;
@@ -1269,7 +1281,10 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .yq::before{left:1.75rem}
   .yq-opts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .yq-q{font-size:1.18rem}
+  /* thumb-sized on a phone; 31px was too small to hit reliably */
+  .yq-years button{min-height:40px;padding:0.4rem 0.85rem}
 }
 @media(prefers-reduced-motion:reduce){
-  .yq-mark,.yq-steps li,.yq-steps li::before{animation:none}
+  .yq-mark,.yq-steps li,.yq-steps li::before,
+  .yq-swap .yq-subj,.yq-swap .yq-q,.yq-swap .yq-opts{animation:none}
 }
