@@ -1288,3 +1288,24 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .yq-mark,.yq-steps li,.yq-steps li::before,
   .yq-swap .yq-subj,.yq-swap .yq-q,.yq-swap .yq-opts{animation:none}
 }
+
+/* ===== review outcome marks: the result a parent states, written beside
+   the stars in the same green pen as the hero's 100%. aria-hidden, since
+   the review text already says it. It slams on as its card reveals. ===== */
+.t-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem}
+.t-mark{display:inline-flex;flex-direction:column;align-items:center;flex-shrink:0;
+  color:#246b3b;line-height:1;text-align:center;margin:-0.4rem -0.2rem 0.4rem 0;
+  --r:-6deg;transform:rotate(var(--r))}
+.t-mark b{font-family:var(--ff-head);font-weight:700;font-size:1.65rem;
+  letter-spacing:-0.02em;white-space:nowrap}
+.t-mark b i{font-family:var(--ff-body);font-style:normal;font-weight:600;font-size:1.05rem;
+  margin:0 0.18rem;vertical-align:0.18em}
+.t-mark b.w{font-size:1.3rem}
+.t-mark svg{display:block;width:100%;height:7px;margin-top:3px;overflow:visible}
+.t-mark path{fill:none;stroke:#2f8f4e;stroke-width:2.2;stroke-linecap:round}
+.t-mark small{display:block;font-size:0.64rem;font-weight:700;margin-top:0.3rem;
+  max-width:12ch;line-height:1.25}
+/* the decorative quote glyph sits where the mark goes */
+.testimonial.has-mark::before{display:none}
+.reveal.is-in .t-mark{animation:oc-slam .4s .6s both}
+@media(prefers-reduced-motion:reduce){.t-mark{animation:none}}

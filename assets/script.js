@@ -245,7 +245,7 @@ if(location.search.indexOf('promo=11plus-mock')!==-1){
       el._settle = setTimeout(function(){
         el.classList.remove('reveal', 'is-in');
         el.style.transitionDelay = '';
-      }, d + 900);
+      }, d + 1400);
     }
     window.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', onScroll);
