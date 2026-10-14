@@ -719,12 +719,27 @@ function hidePhoneBar(){
   var panes = [].slice.call(document.querySelectorAll('.pin-pane'));
   var badge = document.getElementById('pin-badge');
   if(steps.length && panes.length){
+    var cur = 0;
+    /* the outgoing photo stays fully shown underneath (.was) until the new
+       one has finished wiping up over it */
+    panes.forEach(function(p){
+      p.addEventListener('transitionend', function(ev){
+        if(ev.propertyName !== 'clip-path' || !p.classList.contains('on')) return;
+        panes.forEach(function(q){ if(q !== p) q.classList.remove('was'); });
+      });
+    });
     var io3 = new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(!e.isIntersecting) return;
         var i = steps.indexOf(e.target);
+        if(i === cur) return;
         steps.forEach(function(s,n){ s.classList.toggle('on', n===i); });
-        panes.forEach(function(p,n){ p.classList.toggle('on', n===i); });
+        panes.forEach(function(p,n){
+          p.classList.remove('was');
+          if(n === cur) p.classList.add('was');
+          p.classList.toggle('on', n===i);
+        });
+        cur = i;
         if(badge) badge.textContent = steps[i].dataset.badge;
       });
     },{rootMargin:'-45% 0px -45% 0px'});
