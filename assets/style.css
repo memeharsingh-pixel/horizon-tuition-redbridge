@@ -850,18 +850,14 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
 }
 
 /* ---- hero ---- */
+/* Brand blend: pools of the brand blue, teal and a little amber over navy,
+   drawn by .nhero-glow below. No photo, so nothing to conceal and nothing to
+   download. The headline sits over the blue pool, where white text has
+   ample contrast. */
 .nhero{position:relative;min-height:min(80vh,640px);display:flex;align-items:center;
-  overflow:hidden;--ease-back:cubic-bezier(.34,1.45,.64,1)}
-.nhero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
-/* The blur and the navy duotone are baked into hero-bg.jpg, a 480px file,
-   so nothing identifiable is ever downloaded. A CSS blur on the full photo
-   still shipped the sharp original to anyone who opened the image. No filter
-   here: upscaling an already blurred image is smooth on its own. */
-.nhero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 40%;
-  display:block}
-.nhero-scrim{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(98deg,rgba(9,26,52,0.95) 0%,rgba(9,26,52,0.82) 40%,
-    rgba(9,26,52,0.26) 74%,rgba(9,26,52,0.08) 100%)}
+  overflow:hidden;--ease-back:cubic-bezier(.34,1.45,.64,1);background:var(--navy)}
+/* kept only to carry the ruled page layer below */
+.nhero-scrim{position:absolute;inset:0;z-index:1}
 /* Exercise book page drawn over the scrim, so the rules read evenly across
    the dark and light sides. Lines every 28px, as in --paper-lines. --hm puts
    the red margin 28px left of where the headline starts: the container's
@@ -869,15 +865,17 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
 .nhero-scrim::after{content:"";position:absolute;inset:0;pointer-events:none;
   --hm:calc(max(0px,(100% - 1200px) / 2) + 2rem - 28px);
   background:
-    linear-gradient(90deg,transparent var(--hm),rgba(179,70,44,0.6) var(--hm),
-      rgba(179,70,44,0.6) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
+    linear-gradient(90deg,transparent var(--hm),rgba(255,120,90,0.55) var(--hm),
+      rgba(255,120,90,0.55) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
     repeating-linear-gradient(to bottom,transparent 0 27px,
-      rgba(255,255,255,0.06) 27px 28px)}
+      rgba(255,255,255,0.07) 27px 28px)}
 .nhero-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;
-  padding:4.25rem 2rem;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr);
-  gap:3rem;align-items:center}
-.nhero h1{font-size:clamp(1.75rem,3.6vw,2.7rem);color:#fff;font-weight:600;
-  max-width:20ch;margin-bottom:1rem;line-height:1.16}
+  padding:clamp(2.5rem,6vh,4.5rem) 2rem 3.5rem;display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(0,0.8fr);gap:3.25rem;align-items:start}
+/* the three lines are authored, so no max-width: a measure narrower than
+   the longest line wraps it inside its own reveal span */
+.nhero h1{font-size:clamp(1.75rem,3.4vw,3.1rem);color:#fff;font-weight:600;
+  margin:0.4rem 0 1.25rem;line-height:1.12;letter-spacing:-0.015em}
 .ln{display:block;overflow:hidden}
 .ln>i{display:block;font-style:normal;transform:translateY(106%);
   transition:transform 1s var(--ease-o)}
@@ -897,7 +895,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   transition:background-size 1s var(--ease-o) .55s,color .25s linear .8s;
   padding:0 4px}
 .nhero.in .hl{background-size:100% 100%;color:var(--navy)}
-.nhero-sub{color:rgba(255,255,255,0.86);font-size:1.02rem;max-width:42ch;
+.nhero-sub{color:rgba(255,255,255,0.9);font-size:clamp(1.02rem,1.25vw,1.16rem);max-width:44ch;
   margin-bottom:1.5rem;line-height:1.7}
 .nhero-btns{display:flex;gap:0.75rem;flex-wrap:wrap}
 .nhero-sub,.nhero-btns{opacity:0;transform:translateY(12px);
@@ -1017,8 +1015,6 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .nhero-in{padding-left:1.25rem;padding-right:1.25rem}
   /* the desktop scrim runs left to right, which leaves the end of a wrapped
      headline over the bright part of the photo on a narrow screen */
-  .nhero-scrim{background:linear-gradient(to top,rgba(9,26,52,0.95) 34%,
-    rgba(9,26,52,0.74) 64%,rgba(9,26,52,0.42) 100%)}
   /* padding drops to 1.25rem here, so the margin sits 12px before the text */
   .nhero-scrim::after{--hm:calc(1.25rem - 12px)}
   .nmarks{padding-left:1.25rem;padding-right:1.25rem}
@@ -1047,7 +1043,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   border-bottom:2px solid var(--amber);padding-bottom:2px}
 .nhero-more:hover{color:var(--amber)}
 
-.oc{justify-self:end;width:100%;max-width:400px;position:relative;
+.oc{justify-self:end;width:100%;max-width:430px;position:relative;
   background-color:#fffdf7;border-radius:6px;padding:1.45rem 1.5rem 1.35rem 3.3rem;
   background-image:repeating-linear-gradient(to bottom,transparent 0 27px,
     rgba(26,79,160,0.11) 27px 28px);background-position:0 12px;
@@ -1092,7 +1088,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   radial-gradient(circle at 86% 30%,rgba(140,134,124,0.40) 0 8px,transparent 15px),
   radial-gradient(circle at 40% 100%,rgba(140,134,124,0.40) 0 10px,transparent 18px),
   radial-gradient(circle at 62% 102%,rgba(140,134,124,0.40) 0 9px,transparent 17px)}
-.oc-grade b{font-family:var(--ff-head);font-weight:700;font-size:2rem;letter-spacing:-0.02em}
+.oc-grade b{font-family:var(--ff-head);font-weight:700;font-size:2.1rem;letter-spacing:-0.02em}
 .oc-grade em{font-family:var(--ff-head);font-style:normal;font-weight:700;font-size:1.05rem;
   margin-left:0.18rem}
 .oc-grade svg{display:block;width:100%;height:10px;margin-top:0.12rem;overflow:visible}
@@ -1101,7 +1097,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .oc-grade small{display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.3px;
   margin-top:0.3rem}
 
-.oc-h{font-family:var(--ff-head);color:var(--navy);font-size:1.6rem;line-height:1.18;
+.oc-h{font-family:var(--ff-head);color:var(--navy);font-size:1.7rem;line-height:1.16;
   font-weight:700;margin-bottom:1rem}
 .oc-free{white-space:nowrap;padding:0 4px;margin:0 -2px;
   background:linear-gradient(180deg,transparent 18%,var(--amber) 18%,var(--amber) 90%,transparent 90%)
@@ -1116,7 +1112,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .oc-facts span{display:block;color:var(--ink-muted);font-size:0.82rem;line-height:1.45}
 .oc-prices{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.1rem;
   border-top:1px solid rgba(15,45,90,0.12);padding-top:0.7rem}
-.oc-prices b{display:block;font-family:var(--ff-head);font-size:1.85rem;color:var(--navy);
+.oc-prices b{display:block;font-family:var(--ff-head);font-size:1.95rem;color:var(--navy);
   line-height:1;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
 .oc-prices span{display:block;font-size:0.78rem;color:var(--ink-muted);margin-top:0.3rem}
 .oc-prices em{display:block;font-style:normal;font-weight:700;font-size:0.78rem;
@@ -1309,3 +1305,76 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .testimonial.has-mark::before{display:none}
 .reveal.is-in .t-mark{animation:oc-slam .4s .6s both}
 @media(prefers-reduced-motion:reduce){.t-mark{animation:none}}
+
+/* ===== homepage hero, laptop and up: fill the screen under the contact
+   bar and nav, headline and card both starting at the top ===== */
+.nhero-btns{flex-direction:column;align-items:flex-start;gap:0}
+.nhero-subjects{display:flex;flex-wrap:wrap;gap:0.55rem;margin-top:2.1rem}
+.nhero-subjects a{color:#fff;font-size:0.86rem;font-weight:600;padding:0.45rem 0.95rem;
+  border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.24);
+  transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
+.nhero-subjects a:hover{background:#fff;color:var(--navy);border-color:#fff;transform:translateY(-2px)}
+.nhero-subjects a:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+@media(min-width:901px){
+  .nhero{min-height:clamp(600px,calc(100vh - 104px),860px);align-items:stretch}
+  @supports(height:100svh){
+    .nhero{min-height:clamp(600px,calc(100svh - 104px),860px)}
+  }
+}
+/* on a phone the chips would push the offer card and its button below the
+   first screen; every course is one tap away in the menu */
+@media(max-width:900px){
+  .nhero-subjects{display:none}
+}
+
+/* ===== the hero's colour pools, drifting and breathing =====
+   Four soft glows, each on its own slow path. Only transform and opacity
+   move, so the compositor does the work and nothing repaints per frame.
+   The glows are decoration: their resting state is the full mesh, so with
+   motion off (reduced motion, or a stalled timeline) the colours simply sit
+   still. Amber stays on the card side so it never passes behind the white
+   headline. script.js pauses all of it while the hero is off screen. */
+.nhero-glow{position:absolute;inset:0;z-index:0;pointer-events:none}
+.nhero-glow i{position:absolute;display:block;border-radius:50%;will-change:transform,opacity;
+  animation:var(--a) ease-in-out infinite alternate}
+.nhero-glow i:nth-child(1){left:-22%;top:-38%;width:80%;height:110%;
+  background:radial-gradient(closest-side,#2a63c4,rgba(42,99,196,0) 100%);
+  --a:glow-a 26s}
+.nhero-glow i:nth-child(2){right:-24%;top:-34%;width:76%;height:118%;
+  background:radial-gradient(closest-side,#11b0a3,rgba(17,176,163,0) 100%);
+  --a:glow-b 22s}
+.nhero-glow i:nth-child(3){left:44%;top:30%;width:48%;height:70%;
+  background:radial-gradient(closest-side,rgba(255,198,26,0.6),rgba(255,198,26,0) 100%);
+  --a:glow-c 30s}
+.nhero-glow i:nth-child(4){left:-6%;top:42%;width:66%;height:90%;
+  background:radial-gradient(closest-side,#1a4fa0,rgba(26,79,160,0) 100%);
+  --a:glow-d 24s}
+@keyframes glow-a{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  50%{transform:translate(9%,7%) scale(1.12);opacity:0.7}
+  100%{transform:translate(3%,14%) scale(0.94);opacity:0.95}}
+@keyframes glow-b{
+  0%{transform:translate(0,0) scale(1);opacity:0.95}
+  50%{transform:translate(-11%,10%) scale(1.15);opacity:0.6}
+  100%{transform:translate(-4%,-4%) scale(1.04);opacity:1}}
+@keyframes glow-c{
+  0%{transform:translate(0,0) scale(1);opacity:0.55}
+  50%{transform:translate(10%,-12%) scale(1.2);opacity:1}
+  100%{transform:translate(4%,6%) scale(0.9);opacity:0.7}}
+@keyframes glow-d{
+  0%{transform:translate(0,0) scale(1);opacity:0.9}
+  50%{transform:translate(12%,-6%) scale(1.1);opacity:0.65}
+  100%{transform:translate(-4%,-10%) scale(1.05);opacity:1}}
+.nhero.is-off .nhero-glow i{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){
+  .nhero-glow i{animation:none}
+}
+
+/* ===== phones: the authored headline lines must each fit on one line, or
+   the third wraps inside its own reveal span; tighter spacing keeps the
+   card's button on the first screen under the contact bar and nav ===== */
+@media(max-width:600px){
+  .nhero h1{font-size:clamp(1.4rem,6.5vw,2.1rem);margin:0.2rem 0 0.9rem}
+  .nhero-in{padding:1.4rem 1.25rem 1.4rem;gap:1.2rem}
+  .nhero-sub{margin-bottom:1rem}
+}

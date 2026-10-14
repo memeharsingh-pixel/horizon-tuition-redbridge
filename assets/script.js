@@ -647,6 +647,16 @@ function hidePhoneBar(){
 
   /* ---- hero: homepage uses #nhero, programme pages use #phero ---- */
   var hero = document.getElementById('nhero') || document.getElementById('phero');
+
+  /* the drifting colour glows only need to run while the hero is on screen */
+  var glow = document.querySelector('.nhero-glow');
+  if(glow && window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        e.target.classList.toggle('is-off', !e.isIntersecting);
+      });
+    }).observe(document.getElementById('nhero'));
+  }
   if(hero){
     if(reduce){ hero.classList.add('in'); unmask(); }
     else {
