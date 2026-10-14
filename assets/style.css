@@ -1457,3 +1457,61 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .oc-prices{margin-bottom:0.9rem;padding-top:0.55rem}
   .oc-btn{padding:0.9rem 1rem}
 }
+
+/* ===== programme heroes: the homepage's moving colour, tinted per subject
+   Navy ground with the brand blue and amber glows, and two glows in the
+   page's own subject colour (--acc), so the eight pages share one look but
+   keep their colour coding. Ruled lines and the red margin as on the
+   homepage. Glows move by transform and opacity only, pause off screen and
+   stop for reduced motion; their resting state is the full colour. ===== */
+.phero{background:var(--navy);border-bottom:none;padding-bottom:0.25rem}
+.phero-glow{position:absolute;inset:0;z-index:0;pointer-events:none}
+.phero-glow i{position:absolute;display:block;border-radius:50%;will-change:transform,opacity;
+  animation:var(--a) ease-in-out infinite alternate}
+.phero-glow i:nth-child(1){left:-16%;top:-60%;width:62%;height:165%;
+  background:radial-gradient(closest-side,#3a7ce6,rgba(58,124,230,0) 100%);--a:glow-a 16s}
+.phero-glow i:nth-child(2){right:-14%;top:-55%;width:58%;height:175%;
+  background:radial-gradient(closest-side,var(--acc),transparent 100%);--a:glow-b 14s}
+.phero-glow i:nth-child(3){left:52%;top:18%;width:36%;height:115%;
+  background:radial-gradient(closest-side,rgba(255,200,40,0.45),rgba(255,200,40,0) 100%);--a:glow-c 19s}
+.phero-glow i:nth-child(4){left:-12%;top:38%;width:46%;height:150%;
+  background:radial-gradient(closest-side,var(--acc),transparent 100%);opacity:0.85;--a:glow-d 15s}
+/* ruled lines, the red margin, and a navy wash behind the copy */
+.phero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  --hm:calc(max(0px,(100% - 1200px) / 2) + 2rem - 28px);
+  background:
+    linear-gradient(90deg,transparent var(--hm),rgba(255,120,90,0.55) var(--hm),
+      rgba(255,120,90,0.55) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
+    repeating-linear-gradient(to bottom,transparent 0 27px,rgba(255,255,255,0.07) 27px 28px),
+    radial-gradient(55% 75% at 26% 45%,rgba(9,26,52,0.45),rgba(9,26,52,0.15) 60%,transparent 85%)}
+.phero-in{z-index:2}
+.phero.is-off .phero-glow i{animation-play-state:paused}
+
+/* white type on the dark ground; the eyebrow takes a lightened subject
+   colour so the colour coding survives */
+.phero .eyebrow{color:#fff;color:color-mix(in srgb,var(--acc) 40%,#fff)}
+.phero h1{color:#fff}
+.phero p.sub{color:rgba(255,255,255,0.88)}
+/* the highlighted words start white and only turn navy once the amber is
+   behind them; navy before the sweep would be navy on navy */
+.phero .hl{color:#fff;transition:background-size 1s var(--ease-o) .5s,color .25s linear .8s}
+.phero.in .hl{color:var(--navy)}
+.phero-facts{border-top:1px solid rgba(255,255,255,0.18)}
+.phero-facts div+div{border-left:1px solid rgba(255,255,255,0.18)}
+.phero-facts b{color:#fff}
+.phero-facts span{color:rgba(255,255,255,0.74)}
+@media(max-width:640px){
+  .phero::before{--hm:calc(1.25rem - 12px)}
+  .phero-facts div+div{border-left:none;border-top:1px solid rgba(255,255,255,0.18)}
+  /* each authored line must fit on one line or it wraps inside its reveal
+     span. These three have the longest lines (measured: 13.05em, 12em and
+     12.57em), so they scale to the phone's width; the other five already
+     fit at the normal size. 56px is the hero's side padding. */
+  .phero.science h1{font-size:calc((100vw - 56px) / 13.4)}
+  .phero.sats h1{font-size:calc((100vw - 56px) / 12.4)}
+  .phero.online h1{font-size:calc((100vw - 56px) / 12.9)}
+}
+@media(prefers-reduced-motion:reduce){
+  .phero-glow i{animation:none}
+  .phero .hl{color:var(--navy)!important}
+}
