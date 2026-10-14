@@ -863,13 +863,13 @@ section:last-of-type .section-inner[style*="border-top"]{border-top:none!importa
    the red margin 28px left of where the headline starts: the container's
    left edge plus its padding. Static decoration, nothing animates. */
 .nhero-scrim::after{content:"";position:absolute;inset:0;pointer-events:none;
-  --hm:calc(max(0px,(100% - 1360px) / 2) + 2rem - 28px);
+  --hm:calc(max(0px,(100% - var(--hero-w)) / 2) + 2rem - 28px);
   background:
     linear-gradient(90deg,transparent var(--hm),rgba(255,120,90,0.55) var(--hm),
       rgba(255,120,90,0.55) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
     repeating-linear-gradient(to bottom,transparent 0 27px,
       rgba(255,255,255,0.07) 27px 28px)}
-.nhero-in{position:relative;z-index:2;max-width:1360px;margin:0 auto;width:100%;
+.nhero-in{position:relative;z-index:2;max-width:var(--hero-w);margin:0 auto;width:100%;
   padding:clamp(2.5rem,6vh,4.5rem) 2rem 3.5rem;display:grid;
   grid-template-columns:minmax(0,1.2fr) minmax(0,0.8fr);gap:3.25rem;align-items:start}
 /* the three lines are authored, so no max-width: a measure narrower than
@@ -1323,11 +1323,28 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
 .nhero-subjects a:hover{background:#fff;color:var(--navy);border-color:#fff;transform:translateY(-2px)}
 .nhero-subjects a:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+/* what sits above the hero: the contact bar (one line on desktop) and the
+   nav, or the nav alone once the bar is dismissed. Measured: 103px and 69px. */
+:root{--hero-w:1360px;--hero-top:103px}
+.no-phone-bar{--hero-top:69px}
 @media(min-width:901px){
-  .nhero{min-height:clamp(600px,calc(100vh - 104px),860px);align-items:stretch}
+  /* fill the screen, whatever its height. The old 860px cap left the next
+     section showing underneath on tall monitors. */
+  .nhero{min-height:max(600px,calc(100vh - var(--hero-top)));align-items:stretch}
   @supports(height:100svh){
-    .nhero{min-height:clamp(600px,calc(100svh - 104px),860px)}
+    .nhero{min-height:max(600px,calc(100svh - var(--hero-top)))}
   }
+  /* on a laptop the content nearly fills the hero, so this sits it at the
+     top; on a tall monitor it centres instead of leaving an empty band */
+  .nhero-in{align-content:center}
+}
+/* big monitors: a wider hero lets the authored lines carry bigger type */
+@media(min-width:1700px){
+  :root{--hero-w:1560px}
+  .nhero h1{font-size:clamp(1.75rem,3.6vw,4rem)}
+  .nhero-sub{font-size:1.35rem}
+  .oc{max-width:500px}
+  .oc-h{font-size:1.95rem}
 }
 /* on a phone the chips would push the offer card and its button below the
    first screen; every course is one tap away in the menu */
@@ -1389,7 +1406,7 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 
 /* the homepage's two big moments, hero and session walkthrough, run wider
    than the 1200px column the other sections use */
-.section-inner.wide{max-width:1360px}
+.section-inner.wide{max-width:var(--hero-w)}
 
 /* the walkthrough photo rises and grows into place as the section scrolls
    in. Transform only, so if the observer never fires it is simply there. */
