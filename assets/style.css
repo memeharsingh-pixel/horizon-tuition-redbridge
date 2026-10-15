@@ -1469,16 +1469,18 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
 .phero-glow i{position:absolute;display:block;border-radius:50%;will-change:transform,opacity;
   animation:var(--a) ease-in-out infinite alternate}
 .phero-glow i:nth-child(1){left:-16%;top:-60%;width:62%;height:165%;
-  background:radial-gradient(closest-side,#3a7ce6,rgba(58,124,230,0) 100%);--a:glow-a 16s}
+  background:radial-gradient(closest-side,#3a7ce6,rgba(58,124,230,0) 100%);--a:pglow-a 12s}
 .phero-glow i:nth-child(2){right:-14%;top:-55%;width:58%;height:175%;
-  background:radial-gradient(closest-side,var(--acc),transparent 100%);--a:glow-b 14s}
+  background:radial-gradient(closest-side,var(--acc),transparent 100%);--a:pglow-b 11s}
 .phero-glow i:nth-child(3){left:52%;top:18%;width:36%;height:115%;
-  background:radial-gradient(closest-side,rgba(255,200,40,0.45),rgba(255,200,40,0) 100%);--a:glow-c 19s}
+  background:radial-gradient(closest-side,rgba(255,200,40,0.5),rgba(255,200,40,0) 100%);--a:pglow-c 14s}
 .phero-glow i:nth-child(4){left:-12%;top:38%;width:46%;height:150%;
-  background:radial-gradient(closest-side,var(--acc),transparent 100%);opacity:0.85;--a:glow-d 15s}
+  background:radial-gradient(closest-side,var(--acc),transparent 100%);opacity:0.85;--a:pglow-d 13s}
 /* ruled lines, the red margin, and a navy wash behind the copy */
+/* text starts at the larger of the 32px padding and the centred 1200px
+   column's edge; the margin sits 28px left of it, as on the homepage */
 .phero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  --hm:calc(max(0px,(100% - 1200px) / 2) + 2rem - 28px);
+  --hm:calc(max(2rem,(100% - 1200px) / 2) - 28px);
   background:
     linear-gradient(90deg,transparent var(--hm),rgba(255,120,90,0.55) var(--hm),
       rgba(255,120,90,0.55) calc(var(--hm) + 2px),transparent calc(var(--hm) + 2px)),
@@ -1486,6 +1488,22 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
     radial-gradient(55% 75% at 26% 45%,rgba(9,26,52,0.45),rgba(9,26,52,0.15) 60%,transparent 85%)}
 .phero-in{z-index:2}
 .phero.is-off .phero-glow i{animation-play-state:paused}
+@keyframes pglow-a{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  50%{transform:translate(26%,12%) scale(1.18);opacity:0.55}
+  100%{transform:translate(10%,-10%) scale(0.92);opacity:0.95}}
+@keyframes pglow-b{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  50%{transform:translate(-24%,16%) scale(1.2);opacity:0.5}
+  100%{transform:translate(-8%,-12%) scale(1.05);opacity:0.9}}
+@keyframes pglow-c{
+  0%{transform:translate(0,0) scale(1);opacity:0.45}
+  50%{transform:translate(-30%,-14%) scale(1.3);opacity:1}
+  100%{transform:translate(18%,10%) scale(0.9);opacity:0.6}}
+@keyframes pglow-d{
+  0%{transform:translate(0,0) scale(1);opacity:0.9}
+  50%{transform:translate(34%,-18%) scale(1.15);opacity:0.45}
+  100%{transform:translate(12%,8%) scale(1.08);opacity:1}}
 
 /* white type on the dark ground; the eyebrow takes a lightened subject
    colour so the colour coding survives */
