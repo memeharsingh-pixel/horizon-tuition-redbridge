@@ -1533,3 +1533,96 @@ h1:not(.masked) .ln>i{transform:none;transition:none}
   .phero-glow i{animation:none}
   .phero .hl{color:var(--navy)!important}
 }
+
+
+/* ===== homepage closing band: the offer drawn as a small marked exercise
+   book page, standing on the same drifting colour as the hero, so the page
+   closes the way it opened. Scoped to .cta-page: the eight other pages that
+   use .cta-band keep the flat navy strip. Nothing here is hidden until an
+   animation runs. The pools only drift; the card and its text are drawn in
+   their finished state and never move. ===== */
+.cta-band.cta-page{position:relative;overflow:hidden;background:var(--navy);
+  padding:4.5rem 2rem;text-align:center}
+/* the 60px amber tab the flat band wears as a section divider would read as
+   a loose mark above a page that already carries its own stamp */
+.cta-band.cta-page::before{content:none}
+.cta-glow{position:absolute;inset:0;z-index:0;pointer-events:none}
+.cta-glow i{position:absolute;display:block;border-radius:50%;
+  will-change:transform,opacity;animation:var(--a) ease-in-out infinite alternate}
+/* four pools, not the hero's six: the band is a fraction of the hero's
+   height, so the pools are tall and narrow and the extra two only muddied
+   the middle. Slower than the course heroes, nearer the homepage's pace. */
+.cta-glow i:nth-child(1){left:-18%;top:-70%;width:62%;height:240%;
+  background:radial-gradient(closest-side,#3a7ce6,rgba(58,124,230,0) 100%);--a:cglow-a 15s}
+.cta-glow i:nth-child(2){right:-20%;top:-80%;width:58%;height:260%;
+  background:radial-gradient(closest-side,#1cc6b6,rgba(28,198,182,0) 100%);--a:cglow-b 13s}
+.cta-glow i:nth-child(3){left:38%;top:-40%;width:42%;height:200%;
+  background:radial-gradient(closest-side,rgba(255,200,40,0.6),rgba(255,200,40,0) 100%);--a:cglow-c 18s}
+.cta-glow i:nth-child(4){left:8%;top:10%;width:40%;height:190%;
+  background:radial-gradient(closest-side,rgba(64,140,235,0.7),rgba(64,140,235,0) 100%);--a:cglow-d 16s}
+@keyframes cglow-a{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  50%{transform:translate(14%,6%) scale(1.16);opacity:0.78}
+  100%{transform:translate(6%,-8%) scale(0.96);opacity:1}}
+@keyframes cglow-b{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  50%{transform:translate(-15%,8%) scale(1.18);opacity:0.72}
+  100%{transform:translate(-6%,-6%) scale(1.06);opacity:1}}
+@keyframes cglow-c{
+  0%{transform:translate(0,0) scale(1);opacity:0.68}
+  50%{transform:translate(12%,-10%) scale(1.24);opacity:1}
+  100%{transform:translate(-4%,5%) scale(0.93);opacity:0.8}}
+@keyframes cglow-d{
+  0%{transform:translate(0,0) scale(1);opacity:0.9}
+  50%{transform:translate(16%,-7%) scale(1.14);opacity:0.7}
+  100%{transform:translate(5%,9%) scale(1.05);opacity:1}}
+/* navy wash under the card, then the ruled lines over it, as on the hero */
+.cta-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(60% 120% at 50% 50%,rgba(9,26,52,0.5),
+    rgba(9,26,52,0.2) 60%,transparent 85%)}
+.cta-scrim::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(to bottom,transparent 0 27px,
+    rgba(255,255,255,0.07) 27px 28px)}
+.cta-in{position:relative;z-index:2;max-width:1200px;margin:0 auto}
+
+/* the page itself: the hero offer card's build, smaller and centred */
+.ocm{position:relative;width:100%;max-width:660px;margin:0 auto;text-align:left;
+  background-color:#fffdf7;border-radius:6px;padding:1.5rem 1.75rem 1.4rem 3.4rem;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 27px,
+    rgba(26,79,160,0.11) 27px 28px);background-position:0 14px;
+  box-shadow:0 30px 60px -24px rgba(9,26,52,0.7),0 1px 0 rgba(255,255,255,0.6) inset;
+  transform:rotate(-0.8deg);transition:transform .9s var(--ease-o)}
+.ocm:hover{transform:rotate(0deg) translateY(-3px)}
+.ocm::before{content:"";position:absolute;top:0;bottom:0;left:2.3rem;width:6px;
+  border-left:2px solid rgba(179,70,44,0.55);border-right:1px solid rgba(179,70,44,0.35)}
+.ocm::after{content:"";position:absolute;left:0.8rem;top:1.2rem;bottom:1.2rem;width:10px;
+  background:radial-gradient(circle,rgba(9,26,52,0.18) 4px,transparent 4.5px) 0 0/10px 64px repeat-y}
+.ocm-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem;
+  margin-bottom:0.6rem}
+.ocm-stamp{display:inline-block;color:var(--rule-red);border:2px solid var(--rule-red);
+  border-radius:5px;font-size:0.68rem;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;padding:0.28rem 0.55rem;transform:rotate(-3deg);white-space:nowrap}
+.ocm-mark{color:#246b3b;font-family:var(--ff-head);font-weight:700;font-size:1.15rem;
+  transform:rotate(-4deg);white-space:nowrap;line-height:1.1;text-align:center}
+.ocm-mark svg{display:block;width:100%;height:8px;margin-top:2px;overflow:visible}
+.ocm-mark path{fill:none;stroke:#2f8f4e;stroke-width:2.4;stroke-linecap:round}
+/* .cta-band sets white type for the flat strip; on paper it takes ink */
+.cta-band.cta-page .ocm h2{color:var(--navy);
+  font-size:clamp(1.45rem,2.4vw,1.9rem);line-height:1.15;margin-bottom:0.5rem}
+.cta-band.cta-page .ocm p{color:var(--ink-muted);font-size:0.95rem;
+  margin-bottom:1.1rem;max-width:46ch}
+.ocm .cta-band-btns{justify-content:flex-start}
+/* the white bordered button vanishes on cream, so it takes navy ink here */
+.ocm .btn-outline{color:var(--navy);border-color:rgba(15,45,90,0.35)}
+.ocm .btn-outline:hover{border-color:var(--navy);background:rgba(15,45,90,0.05)}
+
+@media(max-width:640px){
+  .cta-band.cta-page{padding:3rem 1.25rem}
+  /* the tilt costs width the 375px screen has not got, and the margin rule
+     needs the left padding whatever happens */
+  .ocm{padding:1.3rem 1.25rem 1.2rem 3rem;transform:none}
+  .ocm:hover{transform:translateY(-3px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cta-glow i{animation:none}
+}
