@@ -632,7 +632,7 @@ function hidePhoneBar(){
 }
 
 
-/* --- homepage: hero reveal, odometers, pinned sequence, year explorer ----
+/* --- homepage: hero reveal, pinned sequence, year explorer -------------
    Every block below is guarded, so this file stays safe on pages that do
    not contain these elements. */
 (function(){
@@ -668,50 +668,17 @@ function hidePhoneBar(){
     }
   }
 
-  /* ---- odometers ---- */
-  document.querySelectorAll('.odo').forEach(function(o){
-    String(o.dataset.n).split('').forEach(function(d,i){
-      var wrap = document.createElement('span'); wrap.className = 'odo-d';
-      var col  = document.createElement('span'); col.className  = 'odo-col';
-      for(var n=0;n<=9;n++){
-        var s = document.createElement('s'); s.textContent = n; col.appendChild(s);
-      }
-      col.dataset.target = d;
-      col.style.transitionDelay = (i*110) + 'ms';
-      wrap.appendChild(col); o.appendChild(wrap);
-    });
-  });
-  function roll(root){
-    root.querySelectorAll('.odo-col').forEach(function(c){
-      c.style.transform = 'translateY(-' + c.dataset.target + 'em)';
-    });
-  }
-
   /* ---- reveal driver ---- */
   var items = [].slice.call(document.querySelectorAll('[data-anim]'));
-  var stats = document.querySelector('.nstats');
   if(reduce){
     items.forEach(function(el){ el.classList.add('in'); });
-    roll(document);
-  } else if(items.length || stats){
-    if(items.length){
-      var io = new IntersectionObserver(function(es){
-        es.forEach(function(e){
-          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-        });
-      },{threshold:0.25});
-      items.forEach(function(el){ io.observe(el); });
-    }
-    if(stats){
-      var io2 = new IntersectionObserver(function(es){
-        es.forEach(function(e){ if(e.isIntersecting){ roll(e.target); io2.disconnect(); } });
-      },{threshold:0.4});
-      io2.observe(stats);
-    }
-    /* safety net for anything whose base state hides content */
-    setTimeout(function(){
-      roll(document);
-    }, 5000);
+  } else if(items.length){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    },{threshold:0.25});
+    items.forEach(function(el){ io.observe(el); });
   }
 
   /* ---- pinned session sequence ---- */
