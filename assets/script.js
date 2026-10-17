@@ -53,13 +53,6 @@ function filterTestimonials(cat,btn){
     card.style.display=(cat==='all'||card.dataset.cat.includes(cat))?'flex':'none';
   });
 }
-function filterResources(cat,btn){
-  document.querySelectorAll('.resources-filters .filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.querySelectorAll('#resources-grid .blog-card').forEach(function(card){
-    card.style.display=(cat==='all'||card.dataset.cat.includes(cat))?'block':'none';
-  });
-}
 function validateEnquiryForm(){
   var name=document.getElementById('f-name').value.trim();
   var email=document.getElementById('f-email').value.trim();
@@ -905,4 +898,43 @@ function hidePhoneBar(){
     bs[n].focus(); bs[n].click(); e.preventDefault();
   });
   paintYear('2');
+})();
+
+
+/* --- resources accordion -------------------------------------------
+   Guarded like everything else here: no .racc on the page, nothing runs.
+   The panels are open in the markup, so this is what closes them. If the
+   file fails to load the guides stay readable. */
+(function(){
+  var accs = [].slice.call(document.querySelectorAll('.racc'));
+  if(!accs.length) return;
+
+  accs.forEach(function(acc){
+    var items = [].slice.call(acc.querySelectorAll('.racc-item'));
+    acc.classList.add('is-ready');
+    items.forEach(function(it){
+      it.classList.remove('open');
+      it.querySelector('.racc-q').setAttribute('aria-expanded','false');
+    });
+    acc.addEventListener('click', function(e){
+      var btn = e.target.closest ? e.target.closest('.racc-q') : null;
+      if(!btn) return;
+      var item = btn.parentNode, wasOpen = item.classList.contains('open');
+      items.forEach(function(o){
+        o.classList.remove('open');
+        o.querySelector('.racc-q').setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+
+  /* a plain timer rather than requestAnimationFrame, which can be
+     throttled to nothing in an unrendered view: the slide would then
+     never be switched on at all */
+  setTimeout(function(){
+    accs.forEach(function(a){ a.classList.add('racc-on'); });
+  }, 80);
 })();

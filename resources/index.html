@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/style.css?v=9406f78a81"/>
+<link rel="stylesheet" href="/assets/style.css?v=58c808c97a"/>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -129,23 +129,61 @@
 <div class="offer-bar">🎉 First Two Sessions Are Free <span>New students</span></div>
 
 <!-- PAGE CONTENT: resources -->
-<section style="background:var(--navy);padding:3rem 2rem"><div class="section-inner"><div class="section-tag" style="background:rgba(255,255,255,0.15);color:#fff">Learning Hub</div><h1 style="font-family:var(--ff-head);font-size:clamp(1.8rem,4vw,2.5rem);color:#fff">Free Resources for Parents</h1><p style="color:rgba(255,255,255,0.8)">Expert guides written by our teaching team, all completely free.</p></div></section>
+<section class="ihero"><div class="section-inner">
+  <div class="section-tag">Learning Hub</div>
+  <h1><span class="ihero-t">Free Resources for Parents<svg class="ihero-u" viewBox="0 0 300 9" preserveAspectRatio="none" aria-hidden="true"><path d="M4 5 C80 2 220 3 296 6"/></svg></span></h1>
+  <p>Expert guides written by our teaching team, all completely free.</p>
+</div></section>
   <section><div class="section-inner">
-    <div class="resources-filters">
-      <button class="filter-btn active" onclick="filterResources('all',this)">All Articles</button>
-      <button class="filter-btn" onclick="filterResources('11plus',this)">11+</button>
-      <button class="filter-btn" onclick="filterResources('gcse',this)">GCSE</button>
-      <button class="filter-btn" onclick="filterResources('sats',this)">SATs</button>
-      <button class="filter-btn" onclick="filterResources('sen',this)">SEN</button>
-      <button class="filter-btn" onclick="filterResources('maths',this)">Maths</button>
-    </div>
-    <div class="blog-grid" id="resources-grid">
-      <div class="blog-card" data-cat="11plus" onclick="location.href='/resources/11-plus-guide/'"><div class="blog-img" style="background:linear-gradient(135deg,#2d1a6a,#5a3ab0)">🏫</div><div class="blog-body"><div class="blog-cat">11+ Preparation</div><h3>How to Prepare for the 11+ in Redbridge</h3><p>A complete parent guide to grammar school preparation, exam boards, and timelines.</p><div class="blog-date">June 2026</div></div></div>
-      <div class="blog-card" data-cat="sats" onclick="location.href='/resources/sats-guide/'"><div class="blog-img" style="background:linear-gradient(135deg,#1a5a3a,var(--teal))">📝</div><div class="blog-body"><div class="blog-cat">SATs</div><h3>Year 6 SATs: A Parent's Complete Guide</h3><p>Everything about the Year 6 SATs: what they test and how to help.</p><div class="blog-date">May 2026</div></div></div>
-      <div class="blog-card" data-cat="gcse maths" onclick="location.href='/resources/gcse-maths-guide/'"><div class="blog-img" style="background:linear-gradient(135deg,#3a0f1a,#8b1a3a)">📐</div><div class="blog-body"><div class="blog-cat">GCSE</div><h3>GCSE Maths: How to Move from Grade 3 to Grade 5</h3><p>The topics that matter most and how to approach revision.</p><div class="blog-date">April 2026</div></div></div>
-      <div class="blog-card" data-cat="sen" onclick="location.href='/resources/dyslexia-guide/'"><div class="blog-img" style="background:linear-gradient(135deg,#0f3a5a,#1a7ab0)">💙</div><div class="blog-body"><div class="blog-cat">SEN Support</div><h3>What is Dyslexia and How Can Tuition Help?</h3><p>Understanding dyslexia, the signs to look for, and how specialist tuition helps.</p><div class="blog-date">March 2026</div></div></div>
-      
-      
+    <div class="racc" id="resources-list">
+      <div class="racc-item">
+        <button class="racc-q" aria-expanded="true">
+          <span><span class="racc-cat">11+ Preparation</span><span class="racc-t">How to Prepare for the 11+ in Redbridge</span><span class="racc-date">June 2026</span></span>
+          <span class="racc-chev" aria-hidden="true"></span>
+        </button>
+        <div class="racc-p"><div><div class="racc-body">
+          <p>A complete parent guide to grammar school preparation, exam boards, and timelines.</p>
+          <p class="racc-inside">What it covers</p>
+          <ul class="racc-sec"><li>Which schools are we talking about?</li><li>What sort of paper will they sit?</li><li>When should you start?</li><li>What does preparation involve?</li></ul>
+          <a class="racc-go" href="/resources/11-plus-guide/">Read the full guide →</a>
+        </div></div></div>
+      </div>
+      <div class="racc-item">
+        <button class="racc-q" aria-expanded="true">
+          <span><span class="racc-cat">SATs</span><span class="racc-t">Year 6 SATs: A Parent's Complete Guide</span><span class="racc-date">May 2026</span></span>
+          <span class="racc-chev" aria-hidden="true"></span>
+        </button>
+        <div class="racc-p"><div><div class="racc-body">
+          <p>Everything about the Year 6 SATs: what they test and how to help.</p>
+          <p class="racc-inside">What it covers</p>
+          <ul class="racc-sec"><li>What are the Year 6 SATs?</li><li>What papers will my child sit?</li><li>How to support your child at home</li></ul>
+          <a class="racc-go" href="/resources/sats-guide/">Read the full guide →</a>
+        </div></div></div>
+      </div>
+      <div class="racc-item">
+        <button class="racc-q" aria-expanded="true">
+          <span><span class="racc-cat">GCSE</span><span class="racc-t">GCSE Maths: How to Move from Grade 3 to Grade 5</span><span class="racc-date">April 2026</span></span>
+          <span class="racc-chev" aria-hidden="true"></span>
+        </button>
+        <div class="racc-p"><div><div class="racc-body">
+          <p>The topics that matter most and how to approach revision.</p>
+          <p class="racc-inside">What it covers</p>
+          <ul class="racc-sec"><li>Why grade 3 students often get stuck</li><li>The topics that move students most</li><li>The right revision approach</li></ul>
+          <a class="racc-go" href="/resources/gcse-maths-guide/">Read the full guide →</a>
+        </div></div></div>
+      </div>
+      <div class="racc-item">
+        <button class="racc-q" aria-expanded="true">
+          <span><span class="racc-cat">SEN Support</span><span class="racc-t">What is Dyslexia and How Can Tuition Help?</span><span class="racc-date">March 2026</span></span>
+          <span class="racc-chev" aria-hidden="true"></span>
+        </button>
+        <div class="racc-p"><div><div class="racc-body">
+          <p>Understanding dyslexia, the signs to look for, and how specialist tuition helps.</p>
+          <p class="racc-inside">What it covers</p>
+          <ul class="racc-sec"><li>What is dyslexia?</li><li>10 signs your child might have dyslexia</li><li>How specialist tuition helps</li></ul>
+          <a class="racc-go" href="/resources/dyslexia-guide/">Read the full guide →</a>
+        </div></div></div>
+      </div>
     </div>
   </div></section>
 
@@ -187,7 +225,7 @@
   </div>
 </footer>
 
-<script src="/assets/script.js?v=fab5a6f90c"></script>
+<script src="/assets/script.js?v=aaa4d5237a"></script>
 <a class="float-contact" href="/contact/" aria-label="Contact us"><span>💬</span><span class="float-contact-txt">Contact</span></a>
 </body>
 </html>
